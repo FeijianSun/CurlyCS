@@ -106,9 +106,10 @@
 <a style="font-size:13px;text-decoration:none" href="#comparison"><i>'Chained Comparisons'</i></a>, 
 <a style="font-size:13px;text-decoration:none" href="#existential"><i>'Existential Operator'</i></a>, 
 <a style="font-size:13px;text-decoration:none" href="#block-strings"><i>Block Strings</i></a>, 
-      etc.. Hopefully, CurlyCS will be an alternative option for developers who really like the powerful features in <a href="http://coffeescript.org/">CoffeeScript</a> but are not used to its indentation-based and whitespace-sensitive syntax.
+      etc.. Hopefully, CurlyCS will be an alternative option for developers who really like the powerful features in CoffeeScript but are not used to its indentation-based and whitespace-sensitive syntax.
     </p>
 
+    <p><a href="http://github.com/FeijianSun/CurlyCS"><b>CurlyCS Source Repository at GitHub</b></a></p>
     <p>
       <b>Latest Version: </b>
       <a href="http://github.com/FeijianSun/CurlyCS/tarball/master">0.01.1</a>
@@ -121,10 +122,10 @@
       CurlyCS vs. CoffeeScript
     </h2>
     <p>
-      Except for having a different syntax, CurlyCS is just <a href="http://coffeescript.org/">CoffeeScript</a>. The compiled outputs of CurlyCS code and its equivalent <a href="http://coffeescript.org/">CoffeeScript</a> code are the same JavaScript code. This section presents all of major syntax differences between CurlyCS and <a href="http://coffeescript.org/">CoffeeScript</a>.
+      Except for having a different syntax, CurlyCS is just <a href="http://coffeescript.org/">CoffeeScript</a>. The compiled outputs of CurlyCS code and its equivalent CoffeeScript code are the same JavaScript code. This section presents all of major syntax differences between CurlyCS and CoffeeScript.
     </p>
 
-    <p><i>CurlyCS code on the left, equivalent <a href="http://coffeescript.org/">CoffeeScript</a> code on the right.</i></p>
+    <p><i>CurlyCS code on the left, equivalent CoffeeScript code on the right.</i></p>
 <ul>
   <li>
     <p>Code blocks, such as function and class bodies, conditional and loop statements, try/catch, etc., must be surrounded with curly braces <code>{ }</code> in CurlyCS instead of indentation.</p>
@@ -322,7 +323,7 @@ kids =
 
 <ul>
   <li>
-    <p>The keyword <code>then</code> used for writing single line statements in <a href="http://coffeescript.org/">CoffeeScript</a> is dropped in CurlyCS.</p>
+    <p>The keyword <code>then</code> used for writing single line statements in CoffeeScript is dropped in CurlyCS.</p>
   </li>
 </ul>
     <div class='code'><pre><code>date = <span class="keyword">if</span> friday { sue } <span class="keyword">else</span> { jill }
@@ -337,7 +338,7 @@ kids =
 
 <ul>
   <li>
-    <p>Logical operator <code>?</code> in <a href="http://coffeescript.org/">CoffeeScript</a> is replaced with <code>??</code> in CurlyCS. So whitespace is no longer needed to differentiate between logical existential operators.</p>
+    <p>Logical operator <code>?</code> in CoffeeScript is replaced with <code>??</code> in CurlyCS. So whitespace is no longer needed to differentiate between logical existential operators.</p>
   </li>
 </ul>
     <div class='code'><pre><code><span class="comment"># Both '?' are existential operators</span>
@@ -356,7 +357,7 @@ footprints = yeti ? <span class="string">"bear"</span>
 
 <ul>
   <li>
-    <p><a href="http://coffeescript.org/">CoffeeScript</a> allows to declare variables inside <code>class</code> definitions using assignment statements <code>=</code>. Such behavior is banned in CurlyCS.</p>
+    <p>CoffeeScript allows to declare variables inside <code>class</code> definitions using assignment statements <code>=</code>. Such behavior is banned in CurlyCS.</p>
   </li>
 </ul>
     <div class='code'><pre><code>
@@ -374,7 +375,7 @@ footprints = yeti ? <span class="string">"bear"</span>
 
     <p>
       <i>
-        As the semantics of CurlyCS mostly match <a href="http://coffeescript.org/">CoffeeScript</a>, most of the contents and examples in this reference are taken from the <a href="http://coffeescript.org/#language">CoffeeScript Language Reference</a> with the following modifications: first, all of the examples have been translated from <a href="http://coffeescript.org/">CoffeeScript</a> into CurlyCS; second, the contents on some subjects have been revised to be more detailed; last, the subjects have been restructured for reflecting a natural reading flow (in my opinion).
+        As the semantics of CurlyCS mostly match CoffeeScript, most of the contents and examples in this reference are taken from the <a href="http://coffeescript.org/#language">CoffeeScript Language Reference</a> with the following modifications: first, all of the examples have been translated from CoffeeScript into CurlyCS; second, the contents on some subjects have been revised to be more detailed; last, the subjects have been restructured for reflecting a natural reading flow (in my opinion).
       </i>
     </p>
 
