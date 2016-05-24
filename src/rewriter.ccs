@@ -1,0 +1,318 @@
+# The CurlyCS language has a good deal of optional syntax, implicit syntax,
+# and shorthand syntax. This can greatly complicate a grammar and bloat
+# the resulting parse table. Instead of making the parser handle it all, we take
+# a series of passes over the token stream, using this **Rewriter** to convert
+# shorthand into the unambiguous long form, add implicit indentation and
+# parentheses, and generally clean things up.
+
+# The **Rewriter** class is used by the [Lexer](lexer.html), directly against
+# its internal array of tokens.
+
+exports.Rewriter = class {
+
+  # Helpful snippet for debugging:
+  #
+  #     console.log (t[0] + '/' + t[1] for t in @tokens).join ' '
+
+  # Rewrite the token stream in multiple passes, one logical filter at
+  # a time. This could certainly be changed into a single pass through the
+  # stream, with a big ol' efficient switch, but it's much nicer to work with
+  # like this. The order of these passes matters -- indentation must be
+  # corrected before implicit parentheses can be wrapped around blocks of code.
+  rewrite: (@tokens) -> {
+    @removeLeadingNewlines();
+    @closeOpenCalls();
+    @closeOpenIndexes();
+
+    @tagPostfixIFs();
+
+    @tagObjectsAndClasses();
+
+    @addTerminators();
+
+    @fixGeneratedTokens();
+
+    @tokens;
+  },
+
+  # Rewrite the token stream, looking one token ahead and behind.
+  # Allow the return value of the block to tell us how many tokens to move
+  # forwards (or backwards) in the stream, to make sure we don't miss anything
+  # as tokens are inserted and removed, and the stream changes length under
+  # our feet.
+  scanTokens: (block) -> {
+    {:tokens} = this;
+    i = 0;
+    i += block.call(this, token, i, tokens) while token = tokens[i];
+    true;
+  },
+
+  detectEnd: (i, condition, action) -> {
+    {:tokens} = this;
+    levels = 0;
+    while token = tokens[i] {
+      return action.call(this, token, i)     if levels is 0 and condition.call(this, token, i);
+      return action.call(this, token, i - 1) if not token or levels < 0;
+      if token[0] in EXPRESSION_START {
+        levels += 1;
+      }
+      else if token[0] in EXPRESSION_END {
+        levels -= 1;
+      }
+      i += 1;
+    }
+    i - 1;
+  },
+
+  # Leading newlines would introduce an ambiguity in the grammar, so we
+  # dispatch them here.
+  removeLeadingNewlines: -> {
+    break for [tag], i in @tokens when tag isnt 'TERMINATOR';
+    @tokens.splice(0, i) if i;
+  },
+
+  # The lexer has tagged the opening parenthesis of a method call. Match it with
+  # its paired close. We have the mis-nested outdent case included here for
+  # calls that close on the same line, just before their outdent.
+  closeOpenCalls: -> {
+    condition = (token, i) -> {
+      token[0] in [')', 'CALL_END'] or
+      token[0] is 'BLOCK_END' and @tag(i - 1) is ')';
+    };
+
+    action = (token, i) -> {
+      @tokens[if token[0] is 'BLOCK_END' { i - 1 } else { i }][0] = 'CALL_END';
+    };
+
+    @scanTokens((token, i) -> {
+      @detectEnd(i + 1, condition, action) if token[0] is 'CALL_START';
+      1;
+    });
+  },
+
+  # The lexer has tagged the opening parenthesis of an indexing operation call.
+  # Match it with its paired close.
+  closeOpenIndexes: -> {
+    condition = (token, i) -> {
+      token[0] in [']', 'INDEX_END'];
+    };
+
+    action = (token, i) -> {
+      token[0] = 'INDEX_END';
+    };
+
+    @scanTokens((token, i) -> {
+      @detectEnd(i + 1, condition, action) if token[0] is 'INDEX_START';
+      1;
+    });
+  },
+
+  addTerminators: -> {
+    @scanTokens((token, i, tokens) -> {
+      if token[0] is 'BLOCK_END' and tokens[i + 1] and 
+          not (tokens[i + 1][0] in SINGLE_CLOSERS or 
+               tokens[i + 1][0] in BLOCK_NO_TERM) {
+        termToken = ['TERMINATOR', ';'];
+        termToken.explicit = yes;
+        tokens.splice(i + 1, 0, termToken);
+        return 2;
+      }
+      return 1;
+    });
+  },
+
+  tagObjectsAndClasses: -> {
+    @scanTokens((token, i, tokens) -> {
+      clsStart = clsEnd = null;
+      foundCls = false;
+
+      [tag] = token;
+      if tag is ':' {
+
+        # Identifying the empty object {:}
+        if tokens[i - 1][1] is '{' and tokens[i + 1][1] is '}' {
+          if tokens[i - 1][0] is 'BLOCK_START' and tokens[i + 1][0] is 'BLOCK_END' {
+            tokens[i - 1][0] = 'OBJ_START';
+            tokens[i + 1][0] = 'OBJ_END';
+            tokens.splice(i, 1);
+            return 1;
+          }
+        }
+
+        # Looking backward to find the token of OBJ_START
+        found = false;
+        stackIdx = i;
+        stack = [];
+        while not found and tok = tokens[--stackIdx] {
+          switch tok[1] {
+            when '}' {
+              stack.push(tok);
+            }
+            when '{' {
+              if stack.length { stack.pop(); }
+              else {
+                # Found an open '{'
+                if tok[0] is 'BLOCK_START' {
+                  tok[0] = 'OBJ_START';
+                  if tokens[stackIdx - 1] and tokens[stackIdx - 1][0] in ['CLASS', 'EXTENDS'] or 
+                     tokens[stackIdx - 2] and tokens[stackIdx - 2][0] in ['CLASS', 'EXTENDS'] {
+                    foundCls = true;
+                    [clsStart, clsEnd] = @blocking();
+                    tokens.splice(stackIdx, 0, clsStart);
+                    i += 1;
+                  }
+                }
+                found = true;
+                break;
+              }
+            }
+          }
+        }
+        # Looking forward to find the token of OBJ_END
+        found = false;
+        stackIdx = i;
+        stack = [];
+        while not found and tok = tokens[++stackIdx] {
+          switch tok[1] {
+            when '{' {
+              stack.push(tok);
+            }
+            when '}' {
+              if stack.length { stack.pop() }
+              else {
+                # Found an open '}'
+                if tok[0] is 'BLOCK_END' {
+                  tok[0] = 'OBJ_END';
+                  if foundCls {
+                    stackIdx += 1;
+                    tokens.splice(stackIdx, 0, clsEnd);
+                  }
+                }
+                found = true;
+                break;
+              }
+            }
+          }
+        }
+      }
+
+      if foundCls { 2 } else { 1 };
+    });
+  },
+
+# ==========================================================
+
+  fixGeneratedTokens: -> {
+
+    @scanTokens((token, i, tokens) -> {
+      return 1 if     token[2];
+      return 1 unless token.generated or token.explicit;
+      if token[0] is 'OBJ_START' and nextLocation=tokens[i + 1]?[2] {
+
+        {first_line: line, first_column: column} = nextLocation;
+      }
+      else if prevLocation = tokens[i - 1]?[2] {
+        {last_line: line, last_column: column} = prevLocation;
+      }
+      else {
+        line = column = 0;
+      }
+      token[2] = {
+        first_line:   line,
+        first_column: column,
+        last_line:    line,
+        last_column:  column
+      };
+      return 1;
+    });
+  },
+
+  tagPostfixIFs: -> {
+
+    original = null;
+
+    condition = (token, i) -> {
+      [tag] = token;
+      [prevTag] = @tokens[i - 1];
+      tag is 'TERMINATOR' or (tag is 'BLOCK_START' and prevTag not in SINGLE_LINERS);
+    };
+
+    action = (token, i) -> {
+      if token[0] isnt 'BLOCK_START' or (token.generated and not token.fromThen) {
+
+        original[0] = 'POST_' + original[0];
+      }
+    };
+
+    @scanTokens((token, i) -> {
+      return 1 unless token[0] is 'IF';
+      original = token;
+      @detectEnd(i + 1, condition, action);
+      return 1;
+    });
+  },
+
+  blocking: (origin) -> {
+
+    blkStart = ['BLOCK_START', '{'];
+    blkEnd   = ['BLOCK_END', '}'];
+
+    if origin {
+      blkStart.generated = blkEnd.generated = yes;
+      blkStart.origin = blkEnd.origin = origin;
+    }
+    else {
+      blkStart.explicit = blkEnd.explicit = yes;
+    }
+    [blkStart, blkEnd];
+  },
+
+  # Look up a tag by token index.
+  tag: (i) -> { @tokens[i]?[0] }
+};
+
+# Constants
+# ---------
+
+# List of the token pairs that must be balanced.
+BALANCED_PAIRS = [
+  ['(', ')'],
+  ['[', ']'],
+  ['{', '}'],
+  ['BLOCK_START', 'BLOCK_END'],
+  ['OBJ_START', 'OBJ_END'],
+
+  ['CALL_START', 'CALL_END'],
+  ['PARAM_START', 'PARAM_END'],
+  ['INDEX_START', 'INDEX_END'],
+  ['STRING_START', 'STRING_END'],
+  ['REGEX_START', 'REGEX_END']
+];
+
+# The inverse mappings of `BALANCED_PAIRS` we're trying to fix up, so we can
+# look things up from either end.
+exports.INVERSES = INVERSES = {:};
+
+# The tokens that signal the start/end of a balanced pair.
+EXPRESSION_START = [];
+EXPRESSION_END   = [];
+
+for [left, rite] in BALANCED_PAIRS {
+  EXPRESSION_START.push(INVERSES[rite] = left);
+  EXPRESSION_END  .push(INVERSES[left] = rite);
+}
+
+# Tokens that indicate the close of a clause of an expression.
+EXPRESSION_CLOSE = ['CATCH', 'THEN', 'ELSE', 'FINALLY'].concat(EXPRESSION_END);
+
+# Single-line flavors of block expressions that have unclosed endings.
+# The grammar can't disambiguate them, so we insert the implicit indentation.
+SINGLE_LINERS    = ['ELSE', '->', '=>', 'TRY', 'FINALLY', 'THEN'];
+SINGLE_CLOSERS   = ['TERMINATOR', 'CATCH', 'FINALLY', 'ELSE', 'BLOCK_END', 'LEADING_WHEN'];
+
+BLOCK_NO_TERM  = [')', ']', '}', 
+    'CALL_END', 'PARAM_END', 'INDEX_END', 'OBJ_END', 
+    'STRING_END', 'REGEX_END', ',', '?', '+', '-', 'MATH', '**', 
+    'SHIFT', 'COMPARE', 'LOGIC', 'RELATION'
+];
+

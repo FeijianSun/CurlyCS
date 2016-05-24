@@ -1,0 +1,8 @@
+*.ccs
+*.html
+.DS_Store
+.git*
+Cakefile
+documentation/
+extras/curly-cs.js
+src/

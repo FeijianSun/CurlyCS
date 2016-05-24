@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+  <title>CurlyCS</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" type="text/css" href="documentation/css/docs.css" />
+  <link rel="stylesheet" type="text/css" href="documentation/css/tomorrow.css" />
+  <link rel="shortcut icon" href="logo.png" />
+</head>
+<body>
+
+  <div id="fadeout"></div>
+
+  <div id="flybar">
+    <a id="logo" href="#top"><img src="logo.png" width="120" height="39" alt="CurlyCS" /></a>
+
+    <div class="navigation overview">
+      <div class="button">
+        <a class="button" href="#overview">vs. CoffeeScript</a>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="button">
+        Language Reference
+      </div>
+      <div class="contents menu">
+        <a href="#language">Language Reference</a>
+        <a href="#objects-arrays">Objects and Arrays</a>
+        <a href="#slices">Array Slicing and Splicing</a>
+        <a href="#destructuring">Destructuring Assignment</a>
+        <a href="#operators">Operators and Aliases</a>
+        <a href="#conditionals">If/Else and Unless</a>
+        <a href="#switch">Switch/When/Else</a>
+        <a href="#loops">Loops and Comprehensions</a>
+        <a href="#try">Try/Catch/Finally</a>
+        <a href="#functions">Functions</a>
+        <a href="#scoping">Lexical Scoping and Variable Safety</a>
+        <a href="#splats">Splats...</a>
+        <a href="#fat-arrow">Bound Functions</a>
+        <a href="#generator">Generator Functions</a>
+        <a href="#classes">Classes, Inheritance and Super</a>
+        <a href="#expression">Everything is an Expression</a>
+        <a href="#comparison">Chained Comparisons</a>
+        <a href="#existential">Existential Operator</a>
+        <a href="#interpolation">String Interpolation</a>
+        <a href="#multiline">Multiline Strings</a>
+        <a href="#block-strings">Block Strings</a>
+        <a href="#comments">Block Comments</a>
+        <a href="#regexes">Block Regular Expressions</a>
+        <a href="#embedded">Embedded JavaScript</a>
+        <a href="#cake">Cake and Cakefiles</a>
+      </div>
+    </div>
+    <div class="navigation try">
+      <div class="button">
+        Try CurlyCS
+        <div class="repl_bridge"></div>
+      </div>
+      <div class="contents repl_wrapper">
+        <div class="code">
+          <div class="screenshadow tl"></div>
+          <div class="screenshadow tr"></div>
+          <div class="screenshadow bl"></div>
+          <div class="screenshadow br"></div>
+          <div id="repl_source_wrap">
+            <textarea id="repl_source" rows="100" spellcheck="false">alert("Hello CurlyCS!")</textarea>
+          </div>
+          <div id="repl_results_wrap"><pre id="repl_results"></pre></div>
+          <div class="minibutton dark run" title="Ctrl-Enter">Run</div>
+<!-- FSun, 05/16/2016
+          <a class="minibutton permalink" id="repl_permalink">Link</a>
+ -->
+          <br class="clear" />
+        </div>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="button">
+        <a class="button" href="#installation">Installation</a>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="button">
+        <a class="button" href="#usage">Usage</a>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="button">
+        <a class="button" href="#scripts">Script Tag</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <span class="bookmark" id="top"></span>
+
+    <p>
+      <b>CurlyCS is simply a <a href="http://coffeescript.org/">CoffeeScript</a> variant</b> that brings back the JavaScript-like block syntax, while retaining the powerful features, including
+<a style="font-size:13px;text-decoration:none" href="#slices"><i>'Array Slicing & Splicing'</i></a>, 
+<a style="font-size:13px;text-decoration:none" href="#destructuring"><i>'Destructuring Assignment'</i></a>, 
+<a style="font-size:13px;text-decoration:none" href="#switch"><i>'Optional Guard Clause'</i></a>, 
+<a style="font-size:13px;text-decoration:none" href="#loops"><i>'Comprehensions'</i></a>, 
+<a style="font-size:13px;text-decoration:none" href="#splats"><i>Splats</i></a>, 
+<a style="font-size:13px;text-decoration:none" href="#generator"><i>'Generator Function'</i></a>, 
+<a style="font-size:13px;text-decoration:none" href="#comparison"><i>'Chained Comparisons'</i></a>, 
+<a style="font-size:13px;text-decoration:none" href="#existential"><i>'Existential Operator'</i></a>, 
+<a style="font-size:13px;text-decoration:none" href="#block-strings"><i>Block Strings</i></a>, 
+      etc.. Hopefully, CurlyCS will be an alternative option for developers who really like the powerful features in <a href="http://coffeescript.org/">CoffeeScript</a> but are not used to its indentation-based and whitespace-sensitive syntax.
+    </p>
+
+    <p>
+      <b>Latest Version: </b>
+      <a href="http://github.com/FeijianSun/CurlyCS/tarball/master">0.01.1</a>
+    </p>
+
+    <pre>npm install -g curly-cs</pre>
+
+    <h2>
+      <span id="overview" class="bookmark"></span>
+      CurlyCS vs. CoffeeScript
+    </h2>
+    <p>
+      Except for having a different syntax, CurlyCS is just <a href="http://coffeescript.org/">CoffeeScript</a>. The compiled outputs of CurlyCS code and its equivalent <a href="http://coffeescript.org/">CoffeeScript</a> code are the same JavaScript code. This section presents all of major syntax differences between CurlyCS and <a href="http://coffeescript.org/">CoffeeScript</a>.
+    </p>
+
+    <p><i>CurlyCS code on the left, equivalent <a href="http://coffeescript.org/">CoffeeScript</a> code on the right.</i></p>
+<ul>
+  <li>
+    <p>Code blocks, such as function and class bodies, conditional and loop statements, try/catch, etc., must be surrounded with curly braces <code>{ }</code> in CurlyCS instead of indentation.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code><span class="function"><span class="title">grade</span> = <span class="params">(student)</span> -&gt;</span> {
+  <span class="keyword">if</span> student.excellentWork {
+    <span class="string">"A+"</span>
+  } <span class="keyword">else</span> <span class="keyword">if</span> student.okayStuff {
+    <span class="keyword">if</span> student.triedHard { <span class="string">"B"</span> } <span class="keyword">else</span> { <span class="string">"B-"</span> }
+  } <span class="keyword">else</span> {
+    <span class="string">"C"</span>
+  }
+}
+
+<span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span> {
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>)</span> -&gt;</span> { },
+  <span class="attribute">move</span>: <span class="function"><span class="params">(meters)</span> -&gt;</span> {
+    alert(<span class="property">@name</span> + <span class="string">" moved <span class="subst">#{meters}</span>m."</span>)
+  }
+}
+
+grade = <span class="keyword">switch</span> {
+  <span class="keyword">when</span> score &lt; <span class="number">60</span> { <span class="string">'F'</span> }
+  <span class="keyword">when</span> score &lt; <span class="number">70</span> { <span class="string">'D'</span> }
+  <span class="keyword">when</span> score &lt; <span class="number">80</span> { <span class="string">'C'</span> }
+  <span class="keyword">when</span> score &lt; <span class="number">90</span> { <span class="string">'B'</span> }
+  <span class="keyword">else</span> { <span class="string">'A'</span> }
+}
+
+ages = <span class="keyword">for</span> child, age <span class="keyword">of</span> yearsOld {
+  <span class="string">"<span class="subst">#{child}</span> is <span class="subst">#{age}</span>"</span>
+}
+
+<span class="keyword">try</span> {
+  catsAndDogsLivingTogether()
+} <span class="keyword">catch</span> error {
+  <span class="built_in">print</span>(error)
+} <span class="keyword">finally</span> {
+  cleanUp()
+}
+
+    </code></pre><pre><code><span class="function"><span class="title">grade</span> = <span class="params">(student)</span> -&gt;</span>
+  <span class="keyword">if</span> student.excellentWork
+    <span class="string">"A+"</span>;
+  <span class="keyword">else</span> <span class="keyword">if</span> student.okayStuff
+    <span class="keyword">if</span> student.triedHard <span class="keyword">then</span> <span class="string">"B"</span> <span class="keyword">else</span> <span class="string">"B-"</span>
+  <span class="keyword">else</span>
+    <span class="string">"C"</span>
+
+<span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span>
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>)</span> -&gt;</span>
+  <span class="attribute">move</span>: <span class="function"><span class="params">(meters)</span> -&gt;</span>
+    alert <span class="property">@name</span> + <span class="string">" moved <span class="subst">#{meters}</span>m."</span>
+
+grade = <span class="keyword">switch</span>
+  <span class="keyword">when</span> score &lt; <span class="number">60</span> <span class="keyword">then</span> <span class="string">'F'</span>
+  <span class="keyword">when</span> score &lt; <span class="number">70</span> <span class="keyword">then</span> <span class="string">'D'</span>
+  <span class="keyword">when</span> score &lt; <span class="number">80</span> <span class="keyword">then</span> <span class="string">'C'</span>
+  <span class="keyword">when</span> score &lt; <span class="number">90</span> <span class="keyword">then</span> <span class="string">'B'</span>
+  <span class="keyword">else</span> <span class="string">'A'</span>
+
+ages = <span class="keyword">for</span> child, age <span class="keyword">of</span> yearsOld
+  <span class="string">"<span class="subst">#{child}</span> is <span class="subst">#{age}</span>"</span>
+
+<span class="keyword">try</span>
+  catsAndDogsLivingTogether()
+<span class="keyword">catch</span> error
+  <span class="built_in">print</span> error
+<span class="keyword">finally</span>
+  cleanUp();
+
+    </code></pre><script>window.difference1 = "grade = (student) -> {\n  if student.excellentWork {\n    \"A+\";\n  } else if student.okayStuff {\n    if student.triedHard { \"B\" } else { \"B-\" };\n  } else {\n    \"C\";\n  }\n}\n\nclass Animal {\n  constructor: (@name) -> { },\n\n  move: (meters) -> {\n    alert(@name + \" moved #{meters}m.\");\n  }\n}\n\ngrade = switch {\n  when score < 60 { 'F' }\n  when score < 70 { 'D' }\n  when score < 80 { 'C' }\n  when score < 90 { 'B' }\n  else { 'A' }\n}\n\nages = for child, age of yearsOld {\n  \"#{child} is #{age}\";\n}\n\ntry {\n  allHellBreaksLoose();\n  catsAndDogsLivingTogether();\n} catch error {\n  print(error);\n} finally {\n  cleanUp();\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference1);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, any statement that isn't the last one in a script or a block, must be terminated with a semicolon <code>;</code> when it is not in class bodies or a comma <code>,</code> when it is. Blocks don't need terminators.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code>singers = {<span class="attribute">Jagger</span>: <span class="string">"Rock"</span>, <span class="attribute">Elvis</span>: <span class="string">"Roll"</span>};
+
+outer = <span class="number">1</span>;
+<span class="function"><span class="title">changeNumbers</span> = -&gt;</span> {
+  inner = -<span class="number">1</span>;
+  outer = <span class="number">10</span>  <span class="comment"># the last statement in the block</span>
+}
+
+cleanUp();
+
+<span class="comment"># the last statement in the script</span>
+countdown = (num <span class="keyword">for</span> num <span class="keyword">in</span> [<span class="number">10.</span><span class="number">.1</span>])
+
+    </code></pre><pre><code>singers = {<span class="attribute">Jagger</span>: <span class="string">"Rock"</span>, <span class="attribute">Elvis</span>: <span class="string">"Roll"</span>}
+
+outer = <span class="number">1</span>
+<span class="function"><span class="title">changeNumbers</span> = -&gt;</span>
+  inner = -<span class="number">1</span>
+  outer = <span class="number">10</span>
+
+cleanUp()
+
+countdown = (num <span class="keyword">for</span> num <span class="keyword">in</span> [<span class="number">10.</span><span class="number">.1</span>])
+
+    </code></pre><script>window.difference2 = "singers = {Jagger: \"Rock\", Elvis: \"Roll\"};\n\nouter = 1;\nchangeNumbers = -> {\n  inner = -1;\n  outer = 10;  # the last statement in the block\n}\n\ncleanUp();\n\n# the last statement in the script\ncountdown = (num for num in [10..1]);\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference2);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, the arguments  of a function must be wrapped in parentheses <code>( )</code>. An empty parentheses <code>()</code> is needed for invoking a function with no arguments but is optional for defining it.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code><span class="function"><span class="title">cube</span> = <span class="params">(x)</span> -&gt;</span> { square(x) * x }
+
+times(plus(1, 2), minus(3, 4));
+
+r = f([1]);
+
+<span class="function"><span class="title">sayHi</span> = -&gt;</span> { alert("Hi") }
+
+sayHi()
+
+    </code></pre><pre><code><span class="function"><span class="title">cube</span> = <span class="params">x</span> -&gt;</span> square(x) * x
+
+times plus 1, 2, minus 3, 4
+
+r = f [1]  # Here is a function call, not the same as 'f[1]'
+
+<span class="function"><span class="title">sayHi</span> = -&gt;</span> alert "Hi"
+
+sayHi()
+
+    </code></pre><script>window.difference3 = "cube = (x) -> { square(x) * x; }\n\ntimes(plus(1, 2), minus(3, 4));\n\nr = f([1]);\n\nsayHi = -> { alert(\"Hi\") }\n\nsayHi()\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference3);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, objects must be created using explicit curly braces. Elements in arrays and objects must be separated by commas <code>,</code> instead of indentations.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code>bitlist = [
+  <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>,
+  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>,
+  <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>
+];
+
+kids = {
+  <span class="attribute">brother</span>: {
+    <span class="attribute">name</span>: <span class="string">"Max"</span>,
+    <span class="attribute">age</span>:  <span class="number">11</span>
+  },
+  <span class="attribute">sister</span>: {
+    <span class="attribute">name</span>: <span class="string">"Ida"</span>,
+    <span class="attribute">age</span>:  <span class="number">9</span>
+  }
+};
+
+    </code></pre><pre><code>bitlist = [
+  <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>
+  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>
+  <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>
+]
+
+kids = 
+  <span class="attribute">brother</span>: 
+    <span class="attribute">name</span>: <span class="string">"Max"</span>
+    <span class="attribute">age</span>:  <span class="number">11</span>
+  <span class="attribute">sister</span>: 
+    <span class="attribute">name</span>: <span class="string">"Ida"</span>
+    <span class="attribute">age</span>:  <span class="number">9</span>
+
+    </code></pre><script>window.difference4 = "bitlist = [\n  1, 0, 1,\n  0, 0, 1,\n  1, 1, 0\n];\n\nkids = {\n  brother: {\n    name: \"Max\",\n    age:  11\n  },\n  sister: {\n    name: \"Ida\",\n    age:  9\n  }\n};\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference4);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, an empty object is written as <code>{:}</code> while an empty curly braces <code>{}</code> represents an empty block.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span> {
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>, options = {:})</span> -&gt;</span> {}
+}
+
+    </code></pre><pre><code><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>, options = {})</span> -&gt;</span>
+
+    </code></pre><script>window.difference5 = "class Person {\n  constructor: (@name, options = {:}) -> {}\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference5);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, a colon <code>:</code> is needed in front of the element name in the shorthand notation for objects.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code>{<span class="property">:name</span>, <span class="property">:age</span>, <span class="property">:height</span> = <span class="string">'average'</span>} = { <span class="attribute">name</span>: <span class="string">'Tim'</span>, <span class="attribute">age</span>: <span class="number">4</span> };
+
+    </code></pre><pre><code>{<span class="property">name</span>, <span class="property">age</span>, <span class="property">height</span> = <span class="string">'average'</span>} = { <span class="attribute">name</span>: <span class="string">'Tim'</span>, <span class="attribute">age</span>: <span class="number">4</span> }
+
+    </code></pre><script>window.difference6 = "{:name, :age, :height = 'average'} = { name: 'Tim', age: 4 };\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference6);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>The keyword <code>then</code> used for writing single line statements in <a href="http://coffeescript.org/">CoffeeScript</a> is dropped in CurlyCS.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code>date = <span class="keyword">if</span> friday { sue } <span class="keyword">else</span> { jill }
+
+<span class="keyword">for</span> prop <span class="keyword">in</span> properties <span class="keyword">when</span> prop.isValid { return yes }
+
+    </code></pre><pre><code>date = <span class="keyword">if</span> friday <span class="keyword">then</span> sue <span class="keyword">else</span> jill
+
+<span class="keyword">for</span> prop <span class="keyword">in</span> properties <span class="keyword">when</span> prop.isValid <span class="keyword">then</span> return yes
+
+    </code></pre><script>window.difference7 = "date = if friday { sue } else { jill }\n\nfor prop in properties when prop.isValid { return yes }\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference7);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>Logical operator <code>?</code> in <a href="http://coffeescript.org/">CoffeeScript</a> is replaced with <code>??</code> in CurlyCS. So whitespace is no longer needed to differentiate between logical existential operators.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code><span class="comment"># Both '?' are existential operators</span>
+solipsism = <span class="literal">true</span> <span class="keyword">if</span> mind ? <span class="keyword">and</span> <span class="keyword">not</span> world?;
+
+<span class="comment"># Here is logical operator '??'</span>
+footprints = yeti ?? <span class="string">"bear"</span>;
+
+    </code></pre><pre><code><span class="comment"># '?' must be right behind the variables</span>
+solipsism = <span class="literal">true</span> <span class="keyword">if</span> mind? <span class="keyword">and</span> <span class="keyword">not</span> world?
+
+<span class="comment"># There must be a space in front of '?'</span>
+footprints = yeti ? <span class="string">"bear"</span>
+
+    </code></pre><script>window.difference8= "# Both '?' are existential operators\nsolipsism = true if mind ? and not world?;\n\n# Here is logical operator '??'\nfootprints = yeti ?? \"bear\";\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference8);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p><a href="http://coffeescript.org/">CoffeeScript</a> allows to declare variables inside <code>class</code> definitions using assignment statements <code>=</code>. Such behavior is banned in CurlyCS.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code>
+
+    </code></pre><pre><code><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>
+  <span class="attribute">b</span> : 'c'  <span class="comment"># define instance property</span>
+  <span class="attribute">d</span> = 'e'  <span class="comment"># define temporary var</span>
+
+    </code></pre><br class='clear' /></div>
+
+    <h2>
+      <span id="language" class="bookmark"></span>
+      Language Reference
+    </h2>
+
+    <p>
+      <i>
+        As the semantics of CurlyCS mostly match <a href="http://coffeescript.org/">CoffeeScript</a>, most of the contents and examples in this reference are taken from the <a href="http://coffeescript.org/#language">CoffeeScript Language Reference</a> with the following modifications: first, all of the examples have been translated from <a href="http://coffeescript.org/">CoffeeScript</a> into CurlyCS; second, the contents on some subjects have been revised to be more detailed; last, the subjects have been restructured for reflecting a natural reading flow (in my opinion).
+      </i>
+    </p>
+
+    <p>
+      CurlyCS is the same as <a href="http://coffeescript.org/">CoffeeScript</a> on semantics but different on syntax. CurlyCS syntax is not whitespace-sensitive or indentation-based. Like JavaScript, CurlyCS uses curly braces <code>{ }</code> to surround code blocks, such as function and class bodies, conditional and loop statements, try/catch, etc., semicolons <code>;</code> to terminate statements unless they are the last one inside a script or a block, and parentheses <code>( )</code>to define or invoke a function with arguments.
+    </p>
+
+    <p>
+      <i>
+        In all of the examples, the source CurlyCS code is provided on the left, and the direct compilation into JavaScript is on the right. Many of the examples can be run (where it makes sense) by pressing the <b>run</b> button on the right, and can be loaded into the "Try CurlyCS" console by pressing the <b>load</b> button on the left.
+      </i>
+    </p>
+
+    <p>
+      <span id="objects-arrays" class="bookmark"></span>
+      <b class="header">Objects and Arrays</b>
+      The CurlyCS literals for objects and arrays are actually the same as
+      their JavaScript cousins.
+    </p>
+    <div class='code'><pre><code>song = [<span class="string">"do"</span>, <span class="string">"re"</span>, <span class="string">"mi"</span>, <span class="string">"fa"</span>, <span class="string">"so"</span>];
+
+singers = {<span class="attribute">Jagger</span>: <span class="string">"Rock"</span>, <span class="attribute">Elvis</span>: <span class="string">"Roll"</span>};
+
+bitlist = [
+  <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>,
+  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>,
+  <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>
+];
+
+kids = {
+  <span class="attribute">brother</span>: {
+    <span class="attribute">name</span>: <span class="string">"Max"</span>,
+    <span class="attribute">age</span>:  <span class="number">11</span>
+  },
+  <span class="attribute">sister</span>: {
+    <span class="attribute">name</span>: <span class="string">"Ida"</span>,
+    <span class="attribute">age</span>:  <span class="number">9</span>
+  }
+};
+
+</code></pre><pre><code><span class="keyword">var</span> bitlist, kids, singers, song;
+
+song = [<span class="string">"do"</span>, <span class="string">"re"</span>, <span class="string">"mi"</span>, <span class="string">"fa"</span>, <span class="string">"so"</span>];
+
+singers = {
+  Jagger: <span class="string">"Rock"</span>,
+  Elvis: <span class="string">"Roll"</span>
+};
+
+bitlist = [<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>];
+
+kids = {
+  brother: {
+    name: <span class="string">"Max"</span>,
+    age: <span class="number">11</span>
+  },
+  sister: {
+    name: <span class="string">"Ida"</span>,
+    age: <span class="number">9</span>
+  }
+};
+
+</code></pre><script>window.example4 = "song = [\"do\", \"re\", \"mi\", \"fa\", \"so\"];\n\nsingers = {Jagger: \"Rock\", Elvis: \"Roll\"};\n\nbitlist = [\n  1, 0, 1,\n  0, 0, 1,\n  1, 1, 0\n];\n\nkids = {\n  brother: {\n    name: \"Max\",\n    age:  11\n  },\n  sister: {\n    name: \"Ida\",\n    age:  9\n  }\n};"</script><div class='minibutton load' onclick='javascript: loadConsole(example4);'>load</div><div class='minibutton ok' onclick='javascript: var bitlist, kids, singers, song;
+
+song = ["do", "re", "mi", "fa", "so"];
+
+singers = {
+  Jagger: "Rock",
+  Elvis: "Roll"
+};
+
+bitlist = [1, 0, 1, 0, 0, 1, 1, 1, 0];
+
+kids = {
+  brother: {
+    name: "Max",
+    age: 11
+  },
+  sister: {
+    name: "Ida",
+    age: 9
+  }
+};
+;alert(song.join(" ... "));'>run: song.join(" ... ")</div><br class='clear' /></div>
+    <p>
+      In JavaScript, you can't use reserved words, like <code>class</code>, as properties
+      of an object, without quoting them as strings. CurlyCS notices reserved words
+      used as keys in objects and quotes them for you, so you don't have to worry
+      about it (say, when using jQuery).
+    </p>
+    <div class='code'><pre><code>$('.account').attr({ class: 'active' });
+
+log(object.class);
+
+</code></pre><pre><code>$(<span class="string">'.account'</span>).attr({
+  <span class="string">"class"</span>: <span class="string">'active'</span>
+});
+
+log(object[<span class="string">"class"</span>]);
+
+</code></pre><script>window.example5 = "$('.account').attr({ class: 'active' });\n\nlog(object.class);\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example5);'>load</div><br class='clear' /></div>
+
+    <p>
+      <span id="slices" class="bookmark"></span>
+      <b class="header">Array Slicing and Splicing</b>
+      Ranges can be used to extract slices of arrays. With two dots (<code>3..6</code>), the range is inclusive (<code>3, 4, 5, 6</code>); With three dots (<code>3...6</code>), the range excludes the end (<code>3, 4, 5</code>). Slices indices have useful defaults. An omitted first index defaults to zero and an omitted second index defaults to the size of the array.
+    </p>
+    <div class='code'><pre><code>numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>];
+
+start   = numbers[<span class="number">0.</span><span class="number">.2</span>];
+
+middle  = numbers[<span class="number">3.</span>..-<span class="number">2</span>];
+
+end     = numbers[-<span class="number">2.</span>.];
+
+copy    = numbers[..];
+
+</code></pre><pre><code><span class="keyword">var</span> copy, end, middle, numbers, start;
+
+numbers = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>];
+
+start = numbers.slice(<span class="number">0</span>, <span class="number">3</span>);
+
+middle = numbers.slice(<span class="number">3</span>, -<span class="number">2</span>);
+
+end = numbers.slice(-<span class="number">2</span>);
+
+copy = numbers.slice(<span class="number">0</span>);
+
+</code></pre><script>window.example14 = "numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];\n\nstart   = numbers[0..2];\n\nmiddle  = numbers[3...-2];\n\nend     = numbers[-2..];\n\ncopy    = numbers[..];\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example14);'>load</div><div class='minibutton ok' onclick='javascript: var copy, end, middle, numbers, start;
+
+numbers = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+start = numbers.slice(0, 3);
+
+middle = numbers.slice(3, -2);
+
+end = numbers.slice(-2);
+
+copy = numbers.slice(0);
+;alert(middle);'>run: middle</div><br class='clear' /></div>
+    <p>
+      The same syntax can be used with assignment to replace a segment of an array
+      with new values, splicing it.
+    </p>
+    <div class='code'><pre><code>numbers = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>];
+
+numbers[<span class="number">3.</span><span class="number">.6</span>] = [-<span class="number">3</span>, -<span class="number">4</span>, -<span class="number">5</span>, -<span class="number">6</span>];
+
+</code></pre><pre><code><span class="keyword">var</span> numbers, ref;
+
+numbers = [<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>];
+
+[].splice.apply(numbers, [<span class="number">3</span>, <span class="number">4</span>].concat(ref = [-<span class="number">3</span>, -<span class="number">4</span>, -<span class="number">5</span>, -<span class="number">6</span>])), ref;
+
+</code></pre><script>window.example15 = "numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];\n\nnumbers[3..6] = [-3, -4, -5, -6];\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example15);'>load</div><div class='minibutton ok' onclick='javascript: var numbers, ref;
+
+numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+[].splice.apply(numbers, [3, 4].concat(ref = [-3, -4, -5, -6])), ref;
+;alert(numbers);'>run: numbers</div><br class='clear' /></div>
+    <p>
+      Note that JavaScript strings are immutable, and can't be spliced.
+    </p>
+
+    <p>
+      <span id="destructuring" class="bookmark"></span>
+      <b class="header">Destructuring Assignment</b>
+      Just like JavaScript (since ES2015), CurlyCS has destructuring assignment
+      syntax. When you assign an array or object literal to a value, CurlyCS
+      breaks up and matches both sides against each other, assigning the values
+      on the right to the variables on the left. In the simplest case, it can
+      be used for parallel assignment:
+    </p>
+    <div class='code'><pre><code>theBait   = <span class="number">1000</span>;
+theSwitch = <span class="number">0</span>;
+
+[theBait, theSwitch] = [theSwitch, theBait];
+
+</code></pre><pre><code><span class="keyword">var</span> ref, theBait, theSwitch;
+
+theBait = <span class="number">1000</span>;
+
+theSwitch = <span class="number">0</span>;
+
+ref = [theSwitch, theBait], theBait = ref[<span class="number">0</span>], theSwitch = ref[<span class="number">1</span>];
+
+</code></pre><script>window.example26 = "theBait   = 1000;\ntheSwitch = 0;\n\n[theBait, theSwitch] = [theSwitch, theBait];\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example26);'>load</div><div class='minibutton ok' onclick='javascript: var ref, theBait, theSwitch;
+
+theBait = 1000;
+
+theSwitch = 0;
+
+ref = [theSwitch, theBait], theBait = ref[0], theSwitch = ref[1];
+;alert(theBait);'>run: theBait</div><br class='clear' /></div>
+    <p>
+      But it's also helpful for dealing with functions that return multiple
+      values.
+    </p>
+    <div class='code'><pre><code><span class="function"><span class="title">weatherReport</span> = <span class="params">(location)</span> -&gt;</span> {
+  <span class="comment"># Make an Ajax request to fetch the weather...</span>
+  [location, <span class="number">72</span>, <span class="string">"Mostly Sunny"</span>];
+}
+
+[city, temp, forecast] = weatherReport(<span class="string">"Berkeley, CA"</span>);
+
+</code></pre><pre><code><span class="keyword">var</span> city, forecast, ref, temp, weatherReport;
+
+weatherReport = <span class="function"><span class="keyword">function</span><span class="params">(location)</span> {</span>
+  <span class="keyword">return</span> [location, <span class="number">72</span>, <span class="string">"Mostly Sunny"</span>];
+}
+
+ref = weatherReport(<span class="string">"Berkeley, CA"</span>), city = ref[<span class="number">0</span>], temp = ref[<span class="number">1</span>], forecast = ref[<span class="number">2</span>];
+
+</code></pre><script>window.example27 = "weatherReport = (location) -> {\n  # Make an Ajax request to fetch the weather...\n  [location, 72, \"Mostly Sunny\"];\n}\n\n[city, temp, forecast] = weatherReport(\"Berkeley, CA\");\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example27);'>load</div><div class='minibutton ok' onclick='javascript: var city, forecast, ref, temp, weatherReport;
+
+weatherReport = function(location) {
+  return [location, 72, "Mostly Sunny"];
+}
+
+ref = weatherReport("Berkeley, CA"), city = ref[0], temp = ref[1], forecast = ref[2];
+;alert(forecast);'>run: forecast</div><br class='clear' /></div>
+    <p>
+      Destructuring assignment can be used with any depth of array and object nesting,
+      to help pull out deeply nested properties.
+    </p>
+    <div class='code'><pre><code>futurists = {
+  <span class="attribute">sculptor</span>: <span class="string">"Umberto Boccioni"</span>,
+  <span class="attribute">painter</span>:  <span class="string">"Vladimir Burliuk"</span>,
+  <span class="attribute">poet</span>: {
+    <span class="attribute">name</span>:   <span class="string">"F.T. Marinetti"</span>,
+    <span class="attribute">address</span>: [
+      <span class="string">"Via Roma 42R"</span>,
+      <span class="string">"Bellagio, Italy 22021"</span>
+    ]
+  }
+};
+
+{<span class="attribute">poet</span>: {:name, <span class="attribute">address</span>: [street, city]}} = futurists;
+
+</code></pre><pre><code><span class="keyword">var</span> city, futurists, name, ref, ref1, street;
+
+futurists = {
+  sculptor: <span class="string">"Umberto Boccioni"</span>,
+  painter: <span class="string">"Vladimir Burliuk"</span>,
+  poet: {
+    name: <span class="string">"F.T. Marinetti"</span>,
+    address: [<span class="string">"Via Roma 42R"</span>, <span class="string">"Bellagio, Italy 22021"</span>]
+  }
+};
+
+ref = futurists.poet, name = ref.name, (ref1 = ref.address, street = ref1[<span class="number">0</span>], city = ref1[<span class="number">1</span>]);
+
+</code></pre><script>window.example28 = "futurists = {\n  sculptor: \"Umberto Boccioni\",\n  painter:  \"Vladimir Burliuk\",\n  poet: {\n    name:   \"F.T. Marinetti\",\n    address: [\n      \"Via Roma 42R\",\n      \"Bellagio, Italy 22021\"\n    ]\n  }\n};\n\n{poet: {:name, address: [street, city]}} = futurists;\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example28);'>load</div><div class='minibutton ok' onclick='javascript: var city, futurists, name, ref, ref1, street;
+
+futurists = {
+  sculptor: "Umberto Boccioni",
+  painter: "Vladimir Burliuk",
+  poet: {
+    name: "F.T. Marinetti",
+    address: ["Via Roma 42R", "Bellagio, Italy 22021"]
+  }
+};
+
+ref = futurists.poet, name = ref.name, (ref1 = ref.address, street = ref1[0], city = ref1[1]);
+;alert(name + "-" + street);'>run: name + "-" + street</div><br class='clear' /></div>
+    <p>
+      Destructuring assignment can even be combined with splats.
+    </p>
+    <div class='code'><pre><code>tag = <span class="string">"&lt;impossible&gt;"</span>;
+
+[open, contents..., close] = tag.split(<span class="string">""</span>);
+
+</code></pre><pre><code><span class="keyword">var</span> close, contents, i, open, ref, tag,
+  slice = [].slice;
+
+tag = <span class="string">"&lt;impossible&gt;"</span>;
+
+ref = tag.split(<span class="string">""</span>), open = ref[<span class="number">0</span>], contents = <span class="number">3</span> &lt;= ref.length ? slice.call(ref, <span class="number">1</span>, i = ref.length - <span class="number">1</span>) : (i = <span class="number">1</span>, []), close = ref[i++];
+
+</code></pre><script>window.example29 = "tag = \"<impossible>\";\n\n[open, contents..., close] = tag.split(\"\");\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example29);'>load</div><div class='minibutton ok' onclick='javascript: var close, contents, i, open, ref, tag,
+  slice = [].slice;
+
+tag = "<impossible>";
+
+ref = tag.split(""), open = ref[0], contents = 3 <= ref.length ? slice.call(ref, 1, i = ref.length - 1) : (i = 1, []), close = ref[i++];
+;alert(contents.join(""));'>run: contents.join("")</div><br class='clear' /></div>
+    <p>
+      Expansion can be used to retrieve elements from the end of an array without having to assign the rest of its values. It works in function parameter lists as well.
+    </p>
+    <div class='code'><pre><code>text = <span class="string">"Every literary critic believes he will
+        outwit history and have the last word"</span>;
+
+[first, ..., last] = text.split(<span class="string">" "</span>);
+
+</code></pre><pre><code><span class="keyword">var</span> first, last, ref, text;
+
+text = <span class="string">"Every literary critic believes he will outwit history and have the last word"</span>;
+
+ref = text.split(<span class="string">" "</span>), first = ref[<span class="number">0</span>], last = ref[ref.length - <span class="number">1</span>];
+
+</code></pre><script>window.example30 = "text = \"Every literary critic believes he will\n        outwit history and have the last word\";\n\n[first, ..., last] = text.split(\" \");\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example30);'>load</div><div class='minibutton ok' onclick='javascript: var first, last, ref, text;
+
+text = "Every literary critic believes he will outwit history and have the last word";
+
+ref = text.split(" "), first = ref[0], last = ref[ref.length - 1];
+;alert(first + " " + last);'>run: first + " " + last</div><br class='clear' /></div>
+    <p>
+      Destructuring assignment is also useful when combined with class constructors to assign properties to your instance from an options object passed to the constructor.
+    </p>
+    <div class='code'><pre><code><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span> {
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(options)</span> -&gt;</span> {
+    {<span class="property">:@name</span>, <span class="property">:@age</span>, <span class="property">:@height</span> = <span class="string">'average'</span>} = options;
+  }
+}
+
+tim = <span class="keyword">new</span> Person({ <span class="attribute">name</span>: <span class="string">'Tim'</span>, <span class="attribute">age</span>: <span class="number">4</span> });
+
+</code></pre><pre><code><span class="keyword">var</span> Person, tim;
+
+Person = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="function"><span class="keyword">function</span> <span class="title">Person</span><span class="params">(options)</span> {</span>
+    <span class="keyword">var</span> ref;
+    <span class="keyword">this</span>.name = options.name, <span class="keyword">this</span>.age = options.age, <span class="keyword">this</span>.height = (ref = options.height) != <span class="literal">null</span> ? ref : <span class="string">'average'</span>;
+  }
+
+  <span class="keyword">return</span> Person;
+
+})();
+
+tim = <span class="keyword">new</span> Person({
+  name: <span class="string">'Tim'</span>,
+  age: <span class="number">4</span>
+});
+
+</code></pre><script>window.example31 = "class Person {\n  constructor: (options) -> {\n    {:@name, :@age, :@height = \"average\"} = options;\n  }\n}\n\ntim = new Person({ name: \"Tim\", age: 4 });\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example31);'>load</div><div class='minibutton ok' onclick='javascript: var Person, tim;
+
+Person = (function() {
+  function Person(options) {
+    var ref;
+    this.name = options.name, this.age = options.age, this.height = (ref = options.height) != null ? ref : "average";
+  }
+
+  return Person;
+
+})();
+
+tim = new Person({
+  name: "Tim",
+  age: 4
+});
+;alert(tim.age + " " + tim.height);'>run: tim.age + " " + tim.height</div><br class='clear' /></div>
+    <p>
+      The above example also demonstrates that if properties are missing in the
+      destructured object or array, you can, just like in JavaScript, provide
+      defaults. The difference with JavaScript is that CurlyCS, as always,
+      treats both null and undefined the same.
+    </p>
+
+    <p>
+      <span id="operators" class="bookmark"></span>
+      <b class="header">Operators and Aliases</b>
+      Because the <code>==</code> operator frequently causes undesirable coercion,
+      is intransitive, and has a different meaning than in other languages,
+      CurlyCS compiles <code>==</code> into <code>===</code>, and <code>!=</code> into
+      <code>!==</code>.
+      In addition, <code>is</code> compiles into <code>===</code>,
+      and <code>isnt</code> into <code>!==</code>.
+    </p>
+    <p>
+      You can use <code>not</code> as an alias for <code>!</code>. For logic, <code>and</code> compiles to <code>&amp;&amp;</code>, and <code>or</code>
+      into <code>||</code>.
+    </p>
+    <p>
+      <code>on</code> and <code>yes</code> are the same as boolean <code>true</code>, 
+      while <code>off</code> and <code>no</code> are boolean <code>false</code>.
+    </p>
+    <p>
+      <code>unless</code> can be used as the inverse of <code>if</code>.
+    </p>
+    <p>
+      As a shortcut for <code>this.property</code>, you can use <code>@property</code>.
+    </p>
+    <p>
+      You can use <code>in</code> to test for array presence, and <code>of</code> to
+      test for object-key presence.
+    </p>
+    <p>
+      To simplify math expressions, <code>**</code> can be used for exponentiation
+      and <code>//</code> performs integer division. <code>%</code> works just like in
+      JavaScript, while <code>%%</code> provides
+      <a href="http://en.wikipedia.org/wiki/Modulo_operation">“dividend dependent modulo”</a>:
+    </p>
+    <div class='code'><pre><code>-<span class="number">7</span>  % <span class="number">5</span> == -<span class="number">2</span>;
+-<span class="number">7</span> %% <span class="number">5</span> == <span class="number"> 3</span>;
+
+tabs.selectTabAtIndex((tabs.currentIndex - count) %% tabs.length);
+
+</code></pre><pre><code><span class="keyword">var</span> modulo = <span class="function"><span class="keyword">function</span><span class="params">(a, b)</span> {</span> <span class="keyword">return</span> (+a % (b = +b) + b) % b; }
+
+-<span class="number">7</span> % <span class="number">5</span> === -<span class="number">2</span>;
+
+modulo(-<span class="number">7</span>, <span class="number">5</span>) === <span class="number">3</span>;
+
+tabs.selectTabAtIndex(modulo(tabs.currentIndex - count, tabs.length));
+
+</code></pre><script>window.example20 = "-7  % 5 == -2;\n-7 %% 5 ==  3;\n\ntabs.selectTabAtIndex((tabs.currentIndex - count) %% tabs.length);\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example20);'>load</div><br class='clear' /></div>
+    <p>
+      All together now:
+    </p>
+
+    <table class="definitions">
+      <tr><th>CurlyCS</th><th>JavaScript</th></tr>
+      <tr><td><code>is</code></td><td><code>===</code></td></tr>
+      <tr><td><code>isnt</code></td><td><code>!==</code></td></tr>
+      <tr><td><code>not</code></td><td><code>!</code></td></tr>
+      <tr><td><code>and</code></td><td><code>&amp;&amp;</code></td></tr>
+      <tr><td><code>or</code></td><td><code>||</code></td></tr>
+      <tr><td><code>true</code>, <code>yes</code>, <code>on</code></td><td><code>true</code></td></tr>
+      <tr><td><code>false</code>, <code>no</code>, <code>off</code></td><td><code>false</code></td></tr>
+      <tr><td><code>@</code>, <code>this</code></td><td><code>this</code></td></tr>
+      <tr><td><code>of</code></td><td><code>in</code></td></tr>
+      <tr><td><code>in</code></td><td><i><small>no JS equivalent</small></i></td></tr>
+      <tr><td><code>a ** b</code></td><td><code>Math.pow(a, b)</code></td></tr>
+      <tr><td><code>a // b</code></td><td><code>Math.floor(a / b)</code></td></tr>
+      <tr><td><code>a %% b</code></td><td><code>(a % b + b) % b</code></td></tr>
+    </table>
+
+    <div class='code'><pre><code>launch() <span class="keyword">if</span> ignition <span class="keyword">is</span> <span class="literal">on</span>;
+
+volume = <span class="number">10</span> <span class="keyword">if</span> band <span class="keyword">isnt</span> SpinalTap;
+
+letTheWildRumpusBegin() <span class="keyword">unless</span> answer <span class="keyword">is</span> <span class="literal">no</span>;
+
+<span class="keyword">if</span> car.speed &lt; limit { accelerate() };
+
+winner = <span class="literal">yes</span> <span class="keyword">if</span> pick <span class="keyword">in</span> [<span class="number">47</span>, <span class="number">92</span>, <span class="number">13</span>];
+
+<span class="built_in">print</span>(inspect(<span class="string">"My name is <span class="subst">#{<span class="property">@name</span>}</span>"</span>));
+
+</code></pre><pre><code><span class="keyword">var</span> volume, winner;
+
+<span class="keyword">if</span> (ignition === <span class="literal">true</span>) {
+  launch();
+}
+
+<span class="keyword">if</span> (band !== SpinalTap) {
+  volume = <span class="number">10</span>;
+}
+
+<span class="keyword">if</span> (answer !== <span class="literal">false</span>) {
+  letTheWildRumpusBegin();
+}
+
+<span class="keyword">if</span> (car.speed &lt; limit) {
+  accelerate();
+}
+
+<span class="keyword">if</span> (pick === <span class="number">47</span> || pick === <span class="number">92</span> || pick === <span class="number">13</span>) {
+  winner = <span class="literal">true</span>;
+}
+
+print(inspect(<span class="string">"My name is "</span> + <span class="keyword">this</span>.name));
+
+</code></pre><script>window.example21 = "launch() if ignition is on;\n\nvolume = 10 if band isnt SpinalTap;\n\nletTheWildRumpusBegin() unless answer is no;\n\nif car.speed < limit { accelerate() };\n\nwinner = yes if pick in [47, 92, 13];\n\nprint(inspect(\"My name is #{@name}\"));\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example21);'>load</div><br class='clear' /></div>
+
+    <p>
+      <span id="conditionals" class="bookmark"></span>
+      <b class="header">If/Else and Unless</b>
+      CurlyCS can compile <b>if</b> statements into JavaScript expressions,
+      using the ternary operator when possible, and closure wrapping otherwise. There
+      is no explicit ternary statement in CurlyCS &mdash; you simply use
+      a regular <b>if</b> statement on a single line.
+    </p>
+    <p>
+      There's also a handy postfix form, with the <code>if</code> or <code>unless</code> at the end.
+    </p>
+    <div class='code'><pre><code><span class="keyword">if</span> happy <span class="keyword">and</span> knowsIt {
+  clapsHands();
+  chaChaCha();
+} <span class="keyword">else</span> {
+  showIt();
+}
+
+date = <span class="keyword">if</span> friday { sue } <span class="keyword">else</span> { jill };
+
+mood = greatlyImproved <span class="keyword">if</span> singing;
+
+</code></pre><pre><code><span class="keyword">var</span> date, mood;
+
+<span class="keyword">if</span> (happy &amp;&amp; knowsIt) {
+  clapsHands();
+  chaChaCha();
+} <span class="keyword">else</span> {
+  showIt();
+}
+
+date = friday ? sue : jill;
+
+<span class="keyword">if</span> (singing) {
+  mood = greatlyImproved;
+}
+
+</code></pre><script>window.example7 = "if happy and knowsIt {\n  clapsHands();\n  chaChaCha();\n} else {\n  showIt();\n}\n\ndate = if friday { sue } else { jill };\n\nmood = greatlyImproved if singing;\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example7);'>load</div><br class='clear' /></div>
+
+    <p>
+      <span id="switch" class="bookmark"></span>
+      <b class="header">Switch/When/Else</b>
+      <b>Switch</b> statements in JavaScript are a bit awkward. You need to
+      remember to <b>break</b> at the end of every <b>case</b> statement to
+      avoid accidentally falling through to the default case.
+      CurlyCS prevents accidental fall-through, and can convert the <code>switch</code>
+      into a returnable, assignable expression.
+    </p>
+    <p>
+      <b>Switch</b> statements in CurlyCS can take multiple
+      values for each <b>when</b> clause. If any of the values match,
+      the clause runs.
+    </p>
+    <div class='code'><pre><code><span class="keyword">switch</span> day {
+  <span class="keyword">when</span> <span class="string">"Mon"</span> { go(work) }
+  <span class="keyword">when</span> <span class="string">"Tue"</span> { go(relax) }
+  <span class="keyword">when</span> <span class="string">"Thu"</span> { go(iceFishing) }
+  <span class="keyword">when</span> <span class="string">"Fri"</span>, <span class="string">"Sat"</span> {
+    <span class="keyword">if</span> day <span class="keyword">is</span> bingoDay {
+      go(bingo);
+      go(dancing);
+    }
+  }
+  <span class="keyword">when</span> <span class="string">"Sun"</span> { go(church) }
+  <span class="keyword">else</span> { go(work) }
+}
+
+</code></pre><pre><code><span class="keyword">switch</span> (day) {
+  <span class="keyword">case</span> <span class="string">"Mon"</span>:
+    go(work);
+    <span class="keyword">break</span>;
+  <span class="keyword">case</span> <span class="string">"Tue"</span>:
+    go(relax);
+    <span class="keyword">break</span>;
+  <span class="keyword">case</span> <span class="string">"Thu"</span>:
+    go(iceFishing);
+    <span class="keyword">break</span>;
+  <span class="keyword">case</span> <span class="string">"Fri"</span>:
+  <span class="keyword">case</span> <span class="string">"Sat"</span>:
+    <span class="keyword">if</span> (day === bingoDay) {
+      go(bingo);
+      go(dancing);
+    }
+    <span class="keyword">break</span>;
+  <span class="keyword">case</span> <span class="string">"Sun"</span>:
+    go(church);
+    <span class="keyword">break</span>;
+  <span class="keyword">default</span>:
+    go(work);
+}
+
+</code></pre><script>window.example35 = "switch day {\n  when \"Mon\" { go(work) }\n  when \"Tue\" { go(relax) }\n  when \"Thu\" { go(iceFishing) }\n  when \"Fri\", \"Sat\" {\n    if day is bingoDay {\n      go(bingo);\n      go(dancing);\n    }\n  }\n  when \"Sun\" { go(church) }\n  else { go(work) }\n}"</script><div class='minibutton load' onclick='javascript: loadConsole(example35);'>load</div><br class='clear' /></div>
+
+    <p>
+      Switch statements can also be used without a control expression, turning them in to a cleaner alternative to if/else chains.
+    </p>
+    <div class='code'><pre><code>score = <span class="number">76</span>;
+grade = <span class="keyword">switch</span> {
+  <span class="keyword">when</span> score &lt; <span class="number">60</span> { <span class="string">'F'</span> }
+  <span class="keyword">when</span> score &lt; <span class="number">70</span> { <span class="string">'D'</span> }
+  <span class="keyword">when</span> score &lt; <span class="number">80</span> { <span class="string">'C'</span> }
+  <span class="keyword">when</span> score &lt; <span class="number">90</span> { <span class="string">'B'</span> }
+  <span class="keyword">else</span> { <span class="string">'A'</span> }
+}
+<span class="comment"># grade == 'C'</span>
+
+</code></pre><pre><code><span class="keyword">var</span> grade, score;
+
+score = <span class="number">76</span>;
+
+grade = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">switch</span> (<span class="literal">false</span>) {
+    <span class="keyword">case</span> !(score &lt; <span class="number">60</span>):
+      <span class="keyword">return</span> <span class="string">'F'</span>;
+    <span class="keyword">case</span> !(score &lt; <span class="number">70</span>):
+      <span class="keyword">return</span> <span class="string">'D'</span>;
+    <span class="keyword">case</span> !(score &lt; <span class="number">80</span>):
+      <span class="keyword">return</span> <span class="string">'C'</span>;
+    <span class="keyword">case</span> !(score &lt; <span class="number">90</span>):
+      <span class="keyword">return</span> <span class="string">'B'</span>;
+    <span class="keyword">default</span>:
+      <span class="keyword">return</span> <span class="string">'A'</span>;
+  }
+})();
+
+</code></pre><script>window.example36 = "score = 76;\ngrade = switch {\n  when score < 60 { 'F' }\n  when score < 70 { 'D' }\n  when score < 80 { 'C' }\n  when score < 90 { 'B' }\n  else { 'A' }\n}\n# grade == 'C'\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example36);'>load</div><br class='clear' /></div>
+
+    <p>
+      <span id="loops" class="bookmark"></span>
+      <b class="header">Loops and Comprehensions</b>
+      Most of the loops you'll write in CurlyCS will be <b>comprehensions</b> over arrays, objects, and ranges. Comprehensions replace (and compile into) <b>for</b> loops, with optional guard clauses and the value of the current array index. Unlike <b>for</b> loops, array comprehensions are expressions, and can be returned and assigned.
+    </p>
+    <div class='code'><pre><code><span class="comment"># Eat lunch.</span>
+eat(food) <span class="keyword">for</span> food <span class="keyword">in</span> [<span class="string">'toast'</span>, <span class="string">'cheese'</span>, <span class="string">'wine'</span>];
+
+<span class="comment"># Fine five course dining.</span>
+courses = [<span class="string">'greens'</span>, <span class="string">'caviar'</span>, <span class="string">'truffles'</span>, <span class="string">'roast'</span>, <span class="string">'cake'</span>];
+menu(i + <span class="number">1</span>, dish) <span class="keyword">for</span> dish, i <span class="keyword">in</span> courses;
+
+<span class="comment"># Health conscious meal.</span>
+foods = [<span class="string">'broccoli'</span>, <span class="string">'spinach'</span>, <span class="string">'chocolate'</span>];
+eat(food) <span class="keyword">for</span> food <span class="keyword">in</span> foods <span class="keyword">when</span> food <span class="keyword">isnt</span> <span class="string">'chocolate'</span>;
+
+</code></pre><pre><code><span class="keyword">var</span> courses, dish, food, foods, i, j, k, l, len, len1, len2, ref;
+
+ref = [<span class="string">'toast'</span>, <span class="string">'cheese'</span>, <span class="string">'wine'</span>];
+<span class="keyword">for</span> (j = <span class="number">0</span>, len = ref.length; j &lt; len; j++) {
+  food = ref[j];
+  eat(food);
+}
+
+courses = [<span class="string">'greens'</span>, <span class="string">'caviar'</span>, <span class="string">'truffles'</span>, <span class="string">'roast'</span>, <span class="string">'cake'</span>];
+
+<span class="keyword">for</span> (i = k = <span class="number">0</span>, len1 = courses.length; k &lt; len1; i = ++k) {
+  dish = courses[i];
+  menu(i + <span class="number">1</span>, dish);
+}
+
+foods = [<span class="string">'broccoli'</span>, <span class="string">'spinach'</span>, <span class="string">'chocolate'</span>];
+
+<span class="keyword">for</span> (l = <span class="number">0</span>, len2 = foods.length; l &lt; len2; l++) {
+  food = foods[l];
+  <span class="keyword">if</span> (food !== <span class="string">'chocolate'</span>) {
+    eat(food);
+  }
+}
+
+</code></pre><script>window.example9 = "# Eat lunch.\neat(food) for food in ['toast', 'cheese', 'wine'];\n\n# Fine five course dining.\ncourses = ['greens', 'caviar', 'truffles', 'roast', 'cake'];\nmenu(i + 1, dish) for dish, i in courses;\n\n# Health conscious meal.\nfoods = ['broccoli', 'spinach', 'chocolate'];\neat(food) for food in foods when food isnt 'chocolate';\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example9);'>load</div><br class='clear' /></div>
+    <p>
+      Comprehensions should be able to handle most places where you otherwise would use a <b>loop</b>, <b>each</b>/<b>forEach</b>, <b>map</b>, or <b>select</b>/<b>filter</b>, for example:
+      <code>shortNames = (name for name in list when name.length &lt; 5)</code><br />
+      If you know the start and end of your loop, or would like to step through in fixed-size increments, you can use a range to specify the start and end of your comprehension.
+    </p>
+    <div class='code'><pre><code>countdown = (num <span class="keyword">for</span> num <span class="keyword">in</span> [<span class="number">10.</span><span class="number">.1</span>]);
+
+</code></pre><pre><code><span class="keyword">var</span> countdown, num;
+
+countdown = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> i, results;
+  results = [];
+  <span class="keyword">for</span> (num = i = <span class="number">10</span>; i &gt;= <span class="number">1</span>; num = --i) {
+    results.push(num);
+  }
+  <span class="keyword">return</span> results;
+})();
+
+</code></pre><script>window.example10 = "countdown = (num for num in [10..1]);\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example10);'>load</div><div class='minibutton ok' onclick='javascript: var countdown, num;
+
+countdown = (function() {
+  var i, results;
+  results = [];
+  for (num = i = 10; i >= 1; num = --i) {
+    results.push(num);
+  }
+  return results;
+})();
+;alert(countdown);'>run: countdown</div><br class='clear' /></div>
+    <p>
+      Note how because we are assigning the value of the comprehensions to a
+      variable in the example above, CurlyCS is collecting the result of
+      each iteration into an array.
+    </p>
+    <p>
+      To step through a range comprehension in fixed-size chunks,
+      use <code>by</code>, for example:<br />
+      <code>evens = (x for x in [0..10] by 2)</code>
+    </p>
+    <p>
+      If you don't need the current iteration value you may omit it:<br />
+      <code>browser.closeCurrentTab() for [0...count]</code>
+    </p>
+    <p>
+      Comprehensions can also be used to iterate over the keys and values in
+      an object. Use <code>of</code> to signal comprehension over the properties of
+      an object instead of the values in an array.
+    </p>
+    <div class='code'><pre><code>yearsOld = { <span class="attribute">max</span>: <span class="number">10</span>, <span class="attribute">ida</span>: <span class="number">9</span>, <span class="attribute">tim</span>: <span class="number">11</span> };
+
+ages = <span class="keyword">for</span> child, age <span class="keyword">of</span> yearsOld {
+  <span class="string">"<span class="subst">#{child}</span> is <span class="subst">#{age}</span>"</span>;
+}
+
+</code></pre><pre><code><span class="keyword">var</span> age, ages, child, yearsOld;
+
+yearsOld = {
+  max: <span class="number">10</span>,
+  ida: <span class="number">9</span>,
+  tim: <span class="number">11</span>
+};
+
+ages = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> results;
+  results = [];
+  <span class="keyword">for</span> (child <span class="keyword">in</span> yearsOld) {
+    age = yearsOld[child];
+    results.push(child + <span class="string">" is "</span> + age);
+  }
+  <span class="keyword">return</span> results;
+})();
+
+</code></pre><script>window.example11 = "yearsOld = { max: 10, ida: 9, tim: 11 };\n\nages = for child, age of yearsOld {\n  \"#{child} is #{age}\";\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example11);'>load</div><div class='minibutton ok' onclick='javascript: var age, ages, child, yearsOld;
+
+yearsOld = {
+  max: 10,
+  ida: 9,
+  tim: 11
+};
+
+ages = (function() {
+  var results;
+  results = [];
+  for (child in yearsOld) {
+    age = yearsOld[child];
+    results.push(child + " is " + age);
+  }
+  return results;
+})();
+;alert(ages.join(", "));'>run: ages.join(", ")</div><br class='clear' /></div>
+    <p>
+      If you would like to iterate over just the keys that are defined on the
+      object itself, by adding a <code>hasOwnProperty</code>
+      check to avoid properties that may be inherited from the prototype, use<br />
+      <code>for own key, value of object</code>
+    </p>
+    <p>
+      The only low-level loop that CurlyCS provides is the <b>while</b> loop. The
+      main difference from JavaScript is that the <b>while</b> loop can be used
+      as an expression, returning an array containing the result of each iteration
+      through the loop.
+    </p>
+    <div class='code'><pre><code><span class="comment"># Econ 101</span>
+<span class="keyword">if</span> <span class="keyword">this</span>.studyingEconomics {
+  purchase() <span class="keyword">while</span> supply &gt; demand;
+  sell() <span class="keyword">until</span> supply &gt; demand;
+}
+
+<span class="comment"># Nursery Rhyme</span>
+num = <span class="number">6</span>;
+lyrics = <span class="keyword">while</span> num -= <span class="number">1</span> {
+  <span class="string">"<span class="subst">#{num}</span> little monkeys, jumping on the bed.
+    One fell out and bumped his head."</span>;
+}
+
+</code></pre><pre><code><span class="keyword">var</span> lyrics, num;
+
+<span class="keyword">if</span> (<span class="keyword">this</span>.studyingEconomics) {
+  <span class="keyword">while</span> (supply &gt; demand) {
+    purchase();
+  }
+  <span class="keyword">while</span> (!(supply &gt; demand)) {
+    sell();
+  }
+}
+
+num = <span class="number">6</span>;
+
+lyrics = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> results;
+  results = [];
+  <span class="keyword">while</span> (num -= <span class="number">1</span>) {
+    results.push(num + <span class="string">" little monkeys, jumping on the bed. One fell out and bumped his head."</span>);
+  }
+  <span class="keyword">return</span> results;
+})();
+
+</code></pre><script>window.example12 = "# Econ 101\nif this.studyingEconomics {\n  purchase() while supply > demand;\n  sell() until supply > demand;\n}\n\n# Nursery Rhyme\nnum = 6;\nlyrics = while num -= 1 {\n  \"#{num} little monkeys, jumping on the bed.\n    One fell out and bumped his head.\";\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example12);'>load</div><div class='minibutton ok' onclick='javascript: var lyrics, num;
+
+if (this.studyingEconomics) {
+  while (supply > demand) {
+    buy();
+  }
+  while (!(supply > demand)) {
+    sell();
+  }
+}
+
+num = 6;
+
+lyrics = (function() {
+  var results;
+  results = [];
+  while (num -= 1) {
+    results.push(num + " little monkeys, jumping on the bed. One fell out and bumped his head.");
+  }
+  return results;
+})();
+;alert(lyrics.join(""));'>run: lyrics.join("
+")</div><br class='clear' /></div>
+    <p>
+      For readability, the <b>until</b> keyword is equivalent to <code>while not</code>,
+      and the <b>loop</b> keyword is equivalent to <code>while true</code>.
+    </p>
+    <p>
+      When using a JavaScript loop to generate functions, it's common to insert
+      a closure wrapper in order to ensure that loop variables are closed over,
+      and all the generated functions don't just share the final values. CurlyCS
+      provides the <code>do</code> keyword, which immediately invokes a passed function,
+      forwarding any arguments.
+    </p>
+    <div class='code'><pre><code><span class="keyword">for</span> filename <span class="keyword">in</span> list {
+  <span class="keyword">do</span> <span class="function"><span class="params">(filename)</span> -&gt;</span> {
+    fs.readFile(filename, <span class="function"><span class="params">(err, contents)</span> -&gt;</span> {
+      compile(filename, contents.toString());
+    });
+  }
+}
+
+</code></pre><pre><code><span class="keyword">var</span> filename, fn, i, len;
+
+fn = <span class="function"><span class="keyword">function</span><span class="params">(filename)</span> {</span>
+  <span class="keyword">return</span> fs.readFile(filename, <span class="function"><span class="keyword">function</span><span class="params">(err, contents)</span> {</span>
+    <span class="keyword">return</span> compile(filename, contents.toString());
+  });
+}
+<span class="keyword">for</span> (i = <span class="number">0</span>, len = list.length; i &lt; len; i++) {
+  filename = list[i];
+  fn(filename);
+}
+
+</code></pre><script>window.example13 = "for filename in list {\n  do (filename) -> {\n    fs.readFile(filename, (err, contents) -> {\n      compile(filename, contents.toString());\n    });\n  }\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example13);'>load</div><br class='clear' /></div>
+
+    <p>
+      <span id="try" class="bookmark"></span>
+      <b class="header">Try/Catch/Finally</b>
+      Try-expressions have the same semantics as try-statements in JavaScript,
+      though in CurlyCS, you may omit <em>both</em> the catch and finally
+      parts. The catch part may also omit the error parameter if it is not needed.
+    </p>
+    <div class='code'><pre><code><span class="keyword">try</span> {
+  allHellBreaksLoose();
+  catsAndDogsLivingTogether();
+} <span class="keyword">catch</span> error {
+  <span class="built_in">print</span>(error);
+} <span class="keyword">finally</span> {
+  cleanUp();
+}
+
+</code></pre><pre><code><span class="keyword">var</span> error, error1;
+
+<span class="keyword">try</span> {
+  allHellBreaksLoose();
+  catsAndDogsLivingTogether();
+} <span class="keyword">catch</span> (error1) {
+  error = error1;
+  print(error);
+} <span class="keyword">finally</span> {
+  cleanUp();
+}
+
+</code></pre><script>window.example37 = "try {\n  allHellBreaksLoose();\n  catsAndDogsLivingTogether();\n} catch error {\n  print(error);\n} finally {\n  cleanUp();\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example37);'>load</div><br class='clear' /></div>
+
+    <p>
+      <span id="functions" class="bookmark"></span>
+      <b class="header">Functions</b>
+      Functions are defined by an optional list of parameters in parentheses,
+      an arrow, and the function body. The empty function looks like this:
+      <code>-> {}</code>
+    </p>
+    <div class='code'><pre><code><span class="function"><span class="title">square</span> = <span class="params">(x)</span> -&gt;</span> { x * x; }
+<span class="function"><span class="title">cube</span>   = <span class="params">(x)</span> -&gt;</span> { square(x) * x; }
+
+</code></pre><pre><code><span class="keyword">var</span> cube, square;
+
+square = <span class="function"><span class="keyword">function</span><span class="params">(x)</span> {</span>
+  <span class="keyword">return</span> x * x;
+}
+
+cube = <span class="function"><span class="keyword">function</span><span class="params">(x)</span> {</span>
+  <span class="keyword">return</span> square(x) * x;
+}
+
+</code></pre><script>window.example2 = "square = (x) -> { x * x; }\ncube   = (x) -> { square(x) * x; }\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example2);'>load</div><div class='minibutton ok' onclick='javascript: var cube, square;
+
+square = function(x) {
+  return x * x;
+}
+
+cube = function(x) {
+  return square(x) * x;
+}
+;alert(cube(5));'>run: cube(5)</div><br class='clear' /></div>
+    <p>
+      Functions may also have default values for arguments, which will be used
+      if the incoming argument is missing (<code>null</code> or <code>undefined</code>).
+    </p>
+    <div class='code'><pre><code><span class="function"><span class="title">fill</span> = <span class="params">(container, liquid = <span class="string">"coffee"</span>)</span> -&gt;</span> {
+  <span class="string">"Filling the <span class="subst">#{container}</span> with <span class="subst">#{liquid}</span>..."</span>;
+}
+
+</code></pre><pre><code><span class="keyword">var</span> fill;
+
+fill = <span class="function"><span class="keyword">function</span><span class="params">(container, liquid)</span> {</span>
+  <span class="keyword">if</span> (liquid == <span class="literal">null</span>) {
+    liquid = <span class="string">"coffee"</span>;
+  }
+  <span class="keyword">return</span> <span class="string">"Filling the "</span> + container + <span class="string">" with "</span> + liquid + <span class="string">"..."</span>;
+}
+
+</code></pre><script>window.example3 = "fill = (container, liquid = \"coffee\") -> {\n  \"Filling the #{container} with #{liquid}...\";\n}"</script><div class='minibutton load' onclick='javascript: loadConsole(example3);'>load</div><div class='minibutton ok' onclick='javascript: var fill;
+
+fill = function(container, liquid) {
+  if (liquid == null) {
+    liquid = "coffee";
+  }
+  return "Filling the " + container + " with " + liquid + "...";
+}
+;alert(fill("cup"));'>run: fill("cup")</div><br class='clear' /></div>
+
+    <p>
+      <span id="scoping" class="bookmark"></span>
+      <b class="header">Lexical Scoping and Variable Safety</b>
+      The CurlyCS compiler takes care to make sure that all of your variables
+      are properly declared within lexical scope &mdash; you never need to write
+      <code>var</code> yourself.
+    </p>
+    <div class='code'><pre><code>outer = <span class="number">1</span>;
+<span class="function"><span class="title">changeNumbers</span> = -&gt;</span> {
+  inner = -<span class="number">1</span>;
+  outer = <span class="number">10</span>;
+}
+inner = changeNumbers();
+
+</code></pre><pre><code><span class="keyword">var</span> changeNumbers, inner, outer;
+
+outer = <span class="number">1</span>;
+
+changeNumbers = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> inner;
+  inner = -<span class="number">1</span>;
+  <span class="keyword">return</span> outer = <span class="number">10</span>;
+}
+
+inner = changeNumbers();
+
+</code></pre><script>window.example6 = "outer = 1;\nchangeNumbers = -> {\n  inner = -1;\n  outer = 10;\n}\ninner = changeNumbers();"</script><div class='minibutton load' onclick='javascript: loadConsole(example6);'>load</div><div class='minibutton ok' onclick='javascript: var changeNumbers, inner, outer;
+
+outer = 1;
+
+changeNumbers = function() {
+  var inner;
+  inner = -1;
+  return outer = 10;
+}
+
+inner = changeNumbers();
+;alert(inner);'>run: inner</div><br class='clear' /></div>
+    <p>
+      Notice how all of the variable declarations have been pushed up to the top of 
+      the closest scope, the first time they appear.  <b>outer</b> is not redeclared 
+      within the inner function, because it's already in scope; <b>inner</b> 
+      within the function, on the other hand,  should not be able to change the 
+      value of the external variable of the same name, and therefore has 
+      a declaration of its own.
+    </p>
+    <p>
+      Because you don't have direct access to the <code>var</code> keyword,
+      it's impossible to shadow an outer variable on purpose, you may only refer
+      to it. So be careful that you're not reusing the name of an external
+      variable accidentally, if you're writing a deeply nested function.
+    </p>
+    <p>
+      Although suppressed within this documentation for clarity, all
+      CurlyCS output is wrapped in an anonymous function:
+      <code>(function(){ ... })();</code> This safety wrapper, combined with the
+      automatic generation of the <code>var</code> keyword, make it exceedingly 
+      difficult to pollute the global namespace by accident.
+    </p>
+    <p>
+      If you'd like to create top-level variables for other scripts to use,
+      attach them as properties on <b>window</b>, or on the <b>exports</b>
+      object in CommonJS. The <b>existential operator</b> (covered below), gives you
+      a reliable way to figure out where to add them; if you're targeting both
+      CommonJS and the browser: <code>exports ?? this</code>
+    </p>
+
+    <p>
+      <span id="splats" class="bookmark"></span>
+      <b class="header">Splats...</b>
+      The JavaScript <b>arguments object</b> is a useful way to work with
+      functions that accept variable numbers of arguments. CurlyCS provides
+      splats <code>...</code>, both for function definition as well as invocation,
+      making variable numbers of arguments a little bit more palatable.
+    </p>
+    <div class='code'><pre><code>gold = silver = rest = <span class="string">"unknown"</span>;
+
+<span class="function"><span class="title">awardMedals</span> = <span class="params">(first, second, others...)</span> -&gt;</span> {
+  gold   = first;
+  silver = second;
+  rest   = others;
+}
+
+contenders = [
+  <span class="string">"Michael Phelps"</span>,
+  <span class="string">"Liu Xiang"</span>,
+  <span class="string">"Yao Ming"</span>,
+  <span class="string">"Allyson Felix"</span>,
+  <span class="string">"Shawn Johnson"</span>,
+  <span class="string">"Roman Sebrle"</span>,
+  <span class="string">"Guo Jingjing"</span>,
+  <span class="string">"Tyson Gay"</span>,
+  <span class="string">"Asafa Powell"</span>,
+  <span class="string">"Usain Bolt"</span>
+];
+
+awardMedals(contenders...);
+
+alert(<span class="string">"Gold: "</span> + gold);
+alert(<span class="string">"Silver: "</span> + silver);
+alert(<span class="string">"The Field: "</span> + rest);
+
+</code></pre><pre><code><span class="keyword">var</span> awardMedals, contenders, gold, rest, silver,
+  slice = [].slice;
+
+gold = silver = rest = <span class="string">"unknown"</span>;
+
+awardMedals = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> first, others, second;
+  first = <span class="built_in">arguments</span>[<span class="number">0</span>], second = <span class="built_in">arguments</span>[<span class="number">1</span>], others = <span class="number">3</span> &lt;= <span class="built_in">arguments</span>.length ? slice.call(<span class="built_in">arguments</span>, <span class="number">2</span>) : [];
+  gold = first;
+  silver = second;
+  <span class="keyword">return</span> rest = others;
+}
+
+contenders = [<span class="string">"Michael Phelps"</span>, <span class="string">"Liu Xiang"</span>, <span class="string">"Yao Ming"</span>, <span class="string">"Allyson Felix"</span>, <span class="string">"Shawn Johnson"</span>, <span class="string">"Roman Sebrle"</span>, <span class="string">"Guo Jingjing"</span>, <span class="string">"Tyson Gay"</span>, <span class="string">"Asafa Powell"</span>, <span class="string">"Usain Bolt"</span>];
+
+awardMedals.apply(<span class="literal">null</span>, contenders);
+
+alert(<span class="string">"Gold: "</span> + gold);
+
+alert(<span class="string">"Silver: "</span> + silver);
+
+alert(<span class="string">"The Field: "</span> + rest);
+
+</code></pre><script>window.example8 = "gold = silver = rest = \"unknown\";\n\nawardMedals = (first, second, others...) -> {\n  gold   = first;\n  silver = second;\n  rest   = others;\n}\n\ncontenders = [\n  \"Michael Phelps\",\n  \"Liu Xiang\",\n  \"Yao Ming\",\n  \"Allyson Felix\",\n  \"Shawn Johnson\",\n  \"Roman Sebrle\",\n  \"Guo Jingjing\",\n  \"Tyson Gay\",\n  \"Asafa Powell\",\n  \"Usain Bolt\"\n];\n\nawardMedals(contenders...);\n\nalert(\"Gold: \" + gold);\nalert(\"Silver: \" + silver);\nalert(\"The Field: \" + rest);\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example8);'>load</div><div class='minibutton ok' onclick='javascript: var awardMedals, contenders, gold, rest, silver,
+  slice = [].slice;
+
+gold = silver = rest = "unknown";
+
+awardMedals = function() {
+  var first, others, second;
+  first = arguments[0], second = arguments[1], others = 3 <= arguments.length ? slice.call(arguments, 2) : [];
+  gold = first;
+  silver = second;
+  return rest = others;
+}
+
+contenders = ["Michael Phelps", "Liu Xiang", "Yao Ming", "Allyson Felix", "Shawn Johnson", "Roman Sebrle", "Guo Jingjing", "Tyson Gay", "Asafa Powell", "Usain Bolt"];
+
+awardMedals.apply(null, contenders);
+
+alert("Gold: " + gold);
+
+alert("Silver: " + silver);
+
+alert("The Field: " + rest);
+;'>run</div><br class='clear' /></div>
+
+    <p>
+      <span id="fat-arrow" class="bookmark"></span>
+      <b class="header">Bound Functions</b>
+      In JavaScript, the <code>this</code> keyword is dynamically scoped to mean the current object that a function is attached to. If you pass a function as a callback or attach it to a different object, the original value of <code>this</code> will be lost.
+    </p>
+    <p>
+      In CurlyCS, the fat arrow <code>=&gt;</code> can be used to both define a function, and to bind it to the current value of <code>this</code>, right on the spot. This is helpful when using callback-based libraries like Prototype or jQuery, for creating iterator functions to pass to <code>each</code>, or event-handler functions to use with <code>on</code>. Functions created with the fat arrow are able to access properties of the <code>this</code> where they're defined.
+    </p>
+    <div class='code'><pre><code><span class="function"><span class="title">Account</span> = <span class="params">(customer, cart)</span> -&gt;</span> {
+  <span class="property">@customer</span> = customer;
+  <span class="property">@cart</span> = cart;
+
+  $<span class="function"><span class="params">(<span class="string">'.shopping_cart'</span>)</span>.<span class="title">on</span>('<span class="title">click</span>', <span class="params">(event)</span> =&gt;</span> {
+    <span class="property">@customer</span>.purchase(<span class="property">@cart</span>);
+  });
+}
+
+</code></pre><pre><code><span class="keyword">var</span> Account;
+
+Account = <span class="function"><span class="keyword">function</span><span class="params">(customer, cart)</span> {</span>
+  <span class="keyword">this</span>.customer = customer;
+  <span class="keyword">this</span>.cart = cart;
+  <span class="keyword">return</span> $(<span class="string">'.shopping_cart'</span>).on(<span class="string">'click'</span>, (<span class="function"><span class="keyword">function</span><span class="params">(_this)</span> {</span>
+    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span><span class="params">(event)</span> {</span>
+      <span class="keyword">return</span> _this.customer.purchase(_this.cart);
+    }
+  })(<span class="keyword">this</span>));
+}
+
+</code></pre><script>window.example32 = "Account = (customer, cart) -> {\n  @customer = customer;\n  @cart = cart;\n\n  $('.shopping_cart').on('click', (event) => {\n    @customer.purchase(@cart);\n  });\n}"</script><div class='minibutton load' onclick='javascript: loadConsole(example32);'>load</div><br class='clear' /></div>
+    <p>
+      If we had used <code>-&gt;</code> in the callback above, <code>@customer</code> would
+      have referred to the undefined "customer" property of the DOM element,
+      and trying to call <code>purchase()</code> on it would have raised an exception.
+    </p>
+    <p>
+      When used in a class definition, methods declared with the fat arrow will
+      be automatically bound to each instance of the class when the instance is
+      constructed.
+    </p>
+
+    <p>
+      <span id="generator" class="bookmark"></span>
+      <b class="header">Generator Functions</b>
+      CurlyCS also supports <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/function*">ES6 generator functions</a> through the <code>yield</code> keyword. There's no <code>function* () {}</code> nonsense &mdash; a generator in CurlyCS is simply a function that yields.
+    </p>
+    <div class='code'><pre><code><span class="function"><span class="title">perfectSquares</span> = -&gt;</span> {
+  num = <span class="number">0</span>;
+  <span class="keyword">loop</span> {
+    num += <span class="number">1</span>;
+    <span class="keyword">yield</span>(num * num);
+  }
+  <span class="keyword">return</span>;
+}
+
+<span class="built_in">window</span>.ps <span class="keyword">or</span>= perfectSquares();
+
+</code></pre><pre><code><span class="keyword">var</span> perfectSquares;
+
+perfectSquares = <span class="function"><span class="keyword">function</span>*<span class="params">()</span> {</span>
+  <span class="keyword">var</span> num;
+  num = <span class="number">0</span>;
+  <span class="keyword">while</span> (<span class="literal">true</span>) {
+    num += <span class="number">1</span>;
+    (<span class="keyword">yield</span> num * num);
+  }
+}
+
+window.ps || (window.ps = perfectSquares());
+
+</code></pre><script>window.example33 = "perfectSquares = -> {\n  num = 0;\n  loop {\n    num += 1;\n    yield(num * num);\n  }\n  return;\n}\n\nwindow.ps or= perfectSquares();"</script><div class='minibutton load' onclick='javascript: loadConsole(example33);'>load</div><div class='minibutton ok' onclick='javascript: var perfectSquares;
+
+perfectSquares = function*() {
+  var num;
+  num = 0;
+  while (true) {
+    num += 1;
+    (yield num * num);
+  }
+}
+
+window.ps || (window.ps = perfectSquares());
+;alert(ps.next().value);'>run: ps.next().value</div><br class='clear' /></div>
+    <p>
+      In case that you need to force a generator that doesn't yield, you may use <code>yield return</code>.
+    </p>
+
+    <p>
+      <span id="classes" class="bookmark"></span>
+      <b class="header">Classes, Inheritance and Super</b>
+      CurlyCS provides a basic <code>class</code> structure that allows you to name your class, set its superclass, assign prototypal properties, and define the constructor, in a single assignable expression.
+    </p>
+    <p>
+      Class definitions, as shown in the example below, are blocks of assignment statements, using <code>:</code> instead of <code>=</code>, and separated with <code>,</code> instead of <code>;</code>. In the example below, both <code>name</code> and <code>price</code> are declared as instance properties while <code>move</code> and <code>sell</code>are instance methods. Within the <code>constructor</code> method or any instance method, <code>this</code> or <code>@</code> refers to the instance. The way of using <code>@name</code> in the <code>constructor</code> method is a shorthand of setting instance properties.
+    </p>
+    <p>
+      In the context of a class definition, however, <code>this</code> or <code>@</code> is the class itself. So, static properties and methods can be declared by setting them directly on <code>this</code>, just like the declaration of the static method <code>@find</code> in the example below.
+    </p>
+    <p>
+      <code>constructor</code> methods are named to better support helpful stack traces. In the first class in the example below, <code>this.constructor.name is "Animal"</code>.
+    </p>
+    <div class='code'><pre><code><span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span> {
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>)</span> -&gt;</span> { },
+
+  <span class="property">price</span>: 5,
+
+  <span class="attribute">move</span>: <span class="function"><span class="params">(meters)</span> -&gt;</span> {
+    alert(<span class="property">@name</span> + <span class="string">" moved <span class="subst">#{meters}</span>m."</span>);
+  },
+
+  <span class="attribute">sell</span>: -&gt;</span> {
+    alert(<span class="string">"Give me <span class="subst">#{@price}</span> dollars!"</span>);
+  },
+
+  <span class="attribute">@find</span>: <span class="function"><span class="params">(who)</span> -&gt;</span> {
+    alert(<span class="string">"Found <span class="subst">#{who}</span>."</span>);
+  }
+}
+
+<span class="class"><span class="keyword">class</span> <span class="title">Snake</span> <span class="keyword">extends</span> <span class="title">Animal</span></span> {
+  <span class="attribute">move</span>:<span class="function"> -&gt;</span> {
+    alert(<span class="string">"Slithering..."</span>);
+    <span class="keyword">super</span>(<span class="number">10</span>);
+  }
+}
+
+<span class="class"><span class="keyword">class</span> <span class="title">Horse</span> <span class="keyword">extends</span> <span class="title">Animal</span></span> {
+  <span class="attribute">move</span>:<span class="function"> -&gt;</span> {
+    alert(<span class="string">"Galloping..."</span>);
+    <span class="keyword">super</span>(<span class="number">45</span>);
+  }
+}
+
+sam = <span class="keyword">new</span> Snake(<span class="string">"Sammy the Python"</span>);
+tom = <span class="keyword">new</span> Horse(<span class="string">"Tommy the Palomi"</span>);
+
+sam.move();
+tom.move();
+
+</code></pre><pre><code><span class="keyword">var</span> Animal, Horse, Snake, sam, tom,
+  extend = <span class="function"><span class="keyword">function</span><span class="params">(child, parent)</span> {</span> <span class="keyword">for</span> (<span class="keyword">var</span> key <span class="keyword">in</span> parent) { <span class="keyword">if</span> (hasProp.call(parent, key)) child[key] = parent[key]; } <span class="function"><span class="keyword">function</span> <span class="title">ctor</span><span class="params">()</span> {</span> <span class="keyword">this</span>.constructor = child; } ctor.prototype = parent.prototype; child.prototype = <span class="keyword">new</span> ctor(); child.__super__ = parent.prototype; <span class="keyword">return</span> child; },
+  hasProp = {}.hasOwnProperty;
+
+Animal = (<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="function"><span class="keyword">function</span> <span class="title">Animal</span><span class="params">(name)</span> {</span>
+    <span class="keyword">this</span>.name = name;
+  }
+
+  Animal.prototype.price = 5;
+
+  Animal.prototype.move = <span class="function"><span class="keyword">function</span><span class="params">(meters)</span> {</span>
+    <span class="keyword">return</span> alert(<span class="keyword">this</span>.name + (<span class="string">" moved "</span> + meters + <span class="string">"m."</span>));
+  };
+
+  Animal.prototype.sell = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    <span class="keyword">return</span> alert(<span class="string">"Give me "</span> + <span class="keyword">this</span>.price + <span class="string">" dollars!"</span>);
+  };
+
+  Animal.find = <span class="function"><span class="keyword">function</span><span class="params">(who)</span> {</span>
+    <span class="keyword">return</span> alert(<span class="string">"Found "</span> + who + <span class="string">" ."</span>);
+  };
+
+  <span class="keyword">return</span> Animal;
+
+})();
+
+Snake = (<span class="function"><span class="keyword">function</span><span class="params">(superClass)</span> {</span>
+  extend(Snake, superClass);
+
+  <span class="function"><span class="keyword">function</span> <span class="title">Snake</span><span class="params">()</span> {</span>
+    <span class="keyword">return</span> Snake.__super__.constructor.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+  }
+
+  Snake.prototype.move = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    alert(<span class="string">"Slithering..."</span>);
+    <span class="keyword">return</span> Snake.__super__.move.call(<span class="keyword">this</span>, <span class="number">10</span>);
+  }
+
+  <span class="keyword">return</span> Snake;
+
+})(Animal);
+
+Horse = (<span class="function"><span class="keyword">function</span><span class="params">(superClass)</span> {</span>
+  extend(Horse, superClass);
+
+  <span class="function"><span class="keyword">function</span> <span class="title">Horse</span><span class="params">()</span> {</span>
+    <span class="keyword">return</span> Horse.__super__.constructor.apply(<span class="keyword">this</span>, <span class="built_in">arguments</span>);
+  }
+
+  Horse.prototype.move = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+    alert(<span class="string">"Galloping..."</span>);
+    <span class="keyword">return</span> Horse.__super__.move.call(<span class="keyword">this</span>, <span class="number">45</span>);
+  }
+
+  <span class="keyword">return</span> Horse;
+
+})(Animal);
+
+sam = <span class="keyword">new</span> Snake(<span class="string">"Sammy the Python"</span>);
+
+tom = <span class="keyword">new</span> Horse(<span class="string">"Tommy the Palomino"</span>);
+
+sam.move();
+
+tom.move();
+
+</code></pre><script>window.example24 = "class Animal {\n  constructor: (@name) -> { },\n\n  price: 5,\n\n  move: (meters) -> {\n    alert(@name + \" moved #{meters}m.\");\n  },\n\n  sell: -> {\n    alert(\"Give me #{@price} dollars!\");\n  },\n\n  @find: (who) -> {\n    alert(\"Found #{who}.\");\n  }\n}\n\nclass Snake extends Animal {\n  move: -> {\n    alert(\"Slithering...\");\n    super(10);\n  }\n}\n\nclass Horse extends Animal {\n  move: -> {\n    alert(\"Galloping...\");\n    super(45);\n  }\n}\n\nsam = new Snake(\"Sammy the Python\");\ntom = new Horse(\"Tommy the Palomi\");\n\nsam.move();\ntom.move();\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example24);'>load</div><div class='minibutton ok' onclick='javascript: var Animal, Horse, Snake, sam, tom,
+  extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+  hasProp = {}.hasOwnProperty;
+
+Animal = (function() {
+  function Animal(name) {
+    this.name = name;
+  }
+
+  Animal.prototype.price = 5;
+
+  Animal.prototype.move = function(meters) {
+    return alert(this.name + (" moved " + meters + "m."));
+  }
+
+  Animal.prototype.sell = function() {
+    return alert("Give me " + this.price + " dollars!");
+  };
+
+  Animal.find = function(who) {
+    return alert("Found " + who + ".");
+  };
+
+  return Animal;
+
+})();
+
+Snake = (function(superClass) {
+  extend(Snake, superClass);
+
+  function Snake() {
+    return Snake.__super__.constructor.apply(this, arguments);
+  }
+
+  Snake.prototype.move = function() {
+    alert("Slithering...");
+    return Snake.__super__.move.call(this, 10);
+  }
+
+  return Snake;
+
+})(Animal);
+
+Horse = (function(superClass) {
+  extend(Horse, superClass);
+
+  function Horse() {
+    return Horse.__super__.constructor.apply(this, arguments);
+  }
+
+  Horse.prototype.move = function() {
+    alert("Galloping...");
+    return Horse.__super__.move.call(this, 45);
+  }
+
+  return Horse;
+
+})(Animal);
+
+sam = new Snake("Sammy the Python");
+
+tom = new Horse("Tommy the Palomino");
+
+sam.move();
+
+tom.move();
+;'>run</div><br class='clear' /></div>
+    <p>
+      If structuring your prototypes classically isn't your cup of tea, CurlyCS
+      provides a couple of lower-level conveniences. <code>extends</code>
+      helps with proper prototype setup, and can be used to create an inheritance
+      chain between any pair of constructor functions; <code>::</code> gives you
+      quick access to an object's prototype; and <code>super()</code> is
+      converted into a call to the immediate ancestor's method of the same name.
+    </p>
+    <div class='code'><pre><code><span class="attribute">String</span>::<span class="function"><span class="title">dasherize</span> = -&gt;</span> {
+  <span class="keyword">this</span>.replace(<span class="regexp">/_/g</span>, <span class="string">"-"</span>);
+}
+
+</code></pre><pre><code><span class="built_in">String</span>.prototype.dasherize = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">return</span> <span class="keyword">this</span>.replace(<span class="regexp">/_/g</span>, <span class="string">"-"</span>);
+}
+
+</code></pre><script>window.example25 = "String::dasherize = -> {\n  this.replace(/_/g, \"-\");\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example25);'>load</div><div class='minibutton ok' onclick='javascript: String.prototype.dasherize = function() {
+  return this.replace(/_/g, "-");
+}
+;alert("one_two".dasherize());'>run: "one_two".dasherize()</div><br class='clear' /></div>
+
+    <p>
+      <span id="expression" class="bookmark"></span>
+      <b class="header">Everything is an Expression (at least, as much as possible)</b>
+      You might have noticed how even though we don't add return statements to CurlyCS functions, they nonetheless return their final values. The CurlyCS compiler tries to make sure that all statements in the language can be used as expressions.
+    </p>
+
+    <p>
+      Watch how the <code>return</code> gets pushed down into each possible branch of execution in the example below.
+    </p>
+    <div class='code'><pre><code><span class="function"><span class="title">grade</span> = <span class="params">(student)</span> -&gt;</span> {
+  <span class="keyword">if</span> student.excellentWork {
+    <span class="string">"A+"</span>;
+  } <span class="keyword">else</span> <span class="keyword">if</span> student.okayStuff {
+    <span class="keyword">if</span> student.triedHard { <span class="string">"B"</span> } <span class="keyword">else</span> { <span class="string">"B-"</span> };
+  } <span class="keyword">else</span> {
+    <span class="string">"C"</span>;
+  }
+}
+
+eldest = <span class="keyword">if</span> <span class="number">24</span> &gt; <span class="number">21</span> { <span class="string">"Liz"</span> } <span class="keyword">else</span> { <span class="string">"Ike"</span> };
+
+</code></pre><pre><code><span class="keyword">var</span> eldest, grade;
+
+grade = <span class="function"><span class="keyword">function</span><span class="params">(student)</span> {</span>
+  <span class="keyword">if</span> (student.excellentWork) {
+    <span class="keyword">return</span> <span class="string">"A+"</span>;
+  } <span class="keyword">else</span> <span class="keyword">if</span> (student.okayStuff) {
+    <span class="keyword">if</span> (student.triedHard) {
+      <span class="keyword">return</span> <span class="string">"B"</span>;
+    } <span class="keyword">else</span> {
+      <span class="keyword">return</span> <span class="string">"B-"</span>;
+    }
+  } <span class="keyword">else</span> {
+    <span class="keyword">return</span> <span class="string">"C"</span>;
+  }
+}
+
+eldest = <span class="number">24</span> &gt; <span class="number">21</span> ? <span class="string">"Liz"</span> : <span class="string">"Ike"</span>;
+
+</code></pre><script>window.example16 = "grade = (student) -> {\n  if student.excellentWork {\n    \"A+\";\n  } else if student.okayStuff {\n    if student.triedHard { \"B\" } else { \"B-\" };\n  } else {\n    \"C\";\n  }\n}\n\neldest = if 24 > 21 { \"Liz\" } else { \"Ike\" };"</script><div class='minibutton load' onclick='javascript: loadConsole(example16);'>load</div><div class='minibutton ok' onclick='javascript: var eldest, grade;
+
+grade = function(student) {
+  if (student.excellentWork) {
+    return "A+";
+  } else if (student.okayStuff) {
+    if (student.triedHard) {
+      return "B";
+    } else {
+      return "B-";
+    }
+  } else {
+    return "C";
+  }
+}
+
+eldest = 24 > 21 ? "Liz" : "Ike";
+;alert(eldest);'>run: eldest</div><br class='clear' /></div>
+    <p>
+      Even though functions will always return their final value, it's both possible
+      and encouraged to return early from a function body writing out the explicit
+      return (<code>return value</code>), when you know that you're done.
+    </p>
+    <p>
+      Because variable declarations occur at the top of scope, assignment can
+      be used within expressions, even for variables that haven't been seen before:
+    </p>
+    <div class='code'><pre><code>six = (one = <span class="number">1</span>) + (two = <span class="number">2</span>) + (three = <span class="number">3</span>);
+
+</code></pre><pre><code><span class="keyword">var</span> one, six, three, two;
+
+six = (one = <span class="number">1</span>) + (two = <span class="number">2</span>) + (three = <span class="number">3</span>);
+
+</code></pre><script>window.example17 = "six = (one = 1) + (two = 2) + (three = 3);\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example17);'>load</div><div class='minibutton ok' onclick='javascript: var one, six, three, two;
+
+six = (one = 1) + (two = 2) + (three = 3);
+;alert(six);'>run: six</div><br class='clear' /></div>
+    <p>
+      Things that would otherwise be statements in JavaScript, when used as part
+      of an expression in CurlyCS, are converted into expressions
+      by wrapping them into a closure. This lets you do useful things, like
+      assign the result of a comprehension to a variable:
+    </p>
+    <div class='code'><pre><code><span class="comment"># The first ten global properties.</span>
+
+globals = (name <span class="keyword">for</span> name <span class="keyword">of</span> <span class="built_in">window</span>)[<span class="number">0.</span>.<span class="number">.10</span>];
+
+</code></pre><pre><code><span class="keyword">var</span> globals, name;
+
+globals = ((<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> results;
+  results = [];
+  <span class="keyword">for</span> (name <span class="keyword">in</span> window) {
+    results.push(name);
+  }
+  <span class="keyword">return</span> results;
+})()).slice(<span class="number">0</span>, <span class="number">10</span>);
+
+</code></pre><script>window.example18 = "# The first ten global properties.\n\nglobals = (name for name of window)[0...10];"</script><div class='minibutton load' onclick='javascript: loadConsole(example18);'>load</div><div class='minibutton ok' onclick='javascript: var globals, name;
+
+globals = ((function() {
+  var results;
+  results = [];
+  for (name in window) {
+    results.push(name);
+  }
+  return results;
+})()).slice(0, 10);
+;alert(globals);'>run: globals</div><br class='clear' /></div>
+    <p>
+      As well as silly things, like passing a <b>try/catch</b> statement directly
+      into a function call:
+    </p>
+    <div class='code'><pre><code>alert(
+  <span class="keyword">try</span> {
+    nonexistent / <span class="literal">undefined</span>;
+  } <span class="keyword">catch</span> error {
+    <span class="string">"And the error is ... <span class="subst">#{error}</span>"</span>;
+  }
+);
+
+</code></pre><pre><code><span class="keyword">var</span> error;
+
+alert((<span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">var</span> error1;
+  <span class="keyword">try</span> {
+    <span class="keyword">return</span> nonexistent / <span class="keyword">void</span> <span class="number">0</span>;
+  } <span class="keyword">catch</span> (error1) {
+    error = error1;
+    <span class="keyword">return</span> <span class="string">"And the error is ... "</span> + error;
+  }
+})());
+
+</code></pre><script>window.example19 = "alert(\n  try {\n    nonexistent / undefined;\n  } catch error {\n    \"And the error is ... #{error}\";\n  }\n);\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example19);'>load</div><div class='minibutton ok' onclick='javascript: var error;
+
+alert((function() {
+  var error1;
+  try {
+    return nonexistent / void 0;
+  } catch (error1) {
+    error = error1;
+    return "And the error is ... " + error;
+  }
+})());
+;'>run</div><br class='clear' /></div>
+    <p>
+      There are a handful of statements in JavaScript that can't be meaningfully
+      converted into expressions, namely <code>break</code>, <code>continue</code>,
+      and <code>return</code>. If you make use of them within a block of code,
+      CurlyCS won't try to perform the conversion.
+    </p>
+
+    <p>
+      <span id="comparison" class="bookmark"></span>
+      <b class="header">Chained Comparisons</b>
+      CurlyCS borrows
+      <a href="http://docs.python.org/reference/expressions.html#notin">chained comparisons</a>
+      from Python &mdash; making it easy to test if a value falls within a
+      certain range.
+    </p>
+    <div class='code'><pre><code>cholesterol = <span class="number">127</span>;
+
+healthy = <span class="number">200</span> &gt; cholesterol &gt; <span class="number">60</span>;
+
+</code></pre><pre><code><span class="keyword">var</span> cholesterol, healthy;
+
+cholesterol = <span class="number">127</span>;
+
+healthy = (<span class="number">200</span> &gt; cholesterol &amp;&amp; cholesterol &gt; <span class="number">60</span>);
+
+</code></pre><script>window.example38 = "cholesterol = 127;\n\nhealthy = 200 > cholesterol > 60;\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example38);'>load</div><div class='minibutton ok' onclick='javascript: var cholesterol, healthy;
+
+cholesterol = 127;
+
+healthy = (200 > cholesterol && cholesterol > 60);
+;alert(healthy);'>run: healthy</div><br class='clear' /></div>
+
+    <p>
+      <span id="existential" class="bookmark"></span>
+      <b class="header">Existential Operator</b>
+      It's a little difficult to check for the existence of a variable in JavaScript. <code>if (variable) ...</code> comes close, but fails for zero, the empty string and false. CurlyCS's existential operator <code>?</code> returns true unless a variable is <b>null</b> or <b>undefined</b>.
+    </p>
+    <p>
+      The assignment variant <code>?=</code> can be used for safer conditional assignment than <code>||=</code>, for cases where you may be handling numbers or strings.
+    </p>
+    <p>
+      The logical variant <code>??</code> returns either the value of the left variable if it's not <b>null</b> or <b>undefined</b>, or the value of the right expression otherwise.
+    </p>
+    <div class='code'><pre><code>solipsism = <span class="literal">true</span> <span class="keyword">if</span> mind? <span class="keyword">and</span> <span class="keyword">not</span> world?;
+
+speed = <span class="number">100</span>;
+speed ?= <span class="number">15</span>;
+
+footprints = yeti ?? <span class="string">"bear"</span>;
+
+</code></pre><pre><code><span class="keyword">var</span> footprints, solipsism, speed;
+
+<span class="keyword">if</span> ((<span class="keyword">typeof</span> mind !== <span class="string">"undefined"</span> &amp;&amp; mind !== <span class="literal">null</span>) &amp;&amp; (<span class="keyword">typeof</span> world === <span class="string">"undefined"</span> || world === <span class="literal">null</span>)) {
+  solipsism = <span class="literal">true</span>;
+}
+
+speed = <span class="number">100</span>;
+
+<span class="keyword">if</span> (speed == <span class="literal">null</span>) {
+  speed = <span class="number">15</span>;
+}
+
+footprints = <span class="keyword">typeof</span> yeti !== <span class="string">"undefined"</span> &amp;&amp; yeti !== <span class="literal">null</span> ? yeti : <span class="string">"bear"</span>;
+
+</code></pre><script>window.example22 = "solipsism = true if mind? and not world?;\n\nspeed = 100;\nspeed ?= 15;\n\nfootprints = yeti ?? \"bear\";\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example22);'>load</div><div class='minibutton ok' onclick='javascript: var footprints, solipsism, speed;
+
+if ((typeof mind !== "undefined" && mind !== null) && (typeof world === "undefined" || world === null)) {
+  solipsism = true;
+}
+
+speed = 100;
+
+if (speed == null) {
+  speed = 15;
+}
+
+footprints = typeof yeti !== "undefined" && yeti !== null ? yeti : "bear";
+;alert(footprints);'>run: footprints</div><br class='clear' /></div>
+    <p>
+      The accessor variant <code>?.</code> can be used to soak up null references in a chain of operations. Use it instead of the dot accessor <code>.</code> in cases where the base value may be <b>null</b> or <b>undefined</b>. If all of the properties exist then you'll get the expected result, if the chain is broken, <b>undefined</b> is returned instead of the <b>TypeError</b> that would be raised otherwise.
+    </p>
+    <div class='code'><pre><code>zip = lottery.drawWinner?().address?.zipcode;
+
+</code></pre><pre><code><span class="keyword">var</span> ref, zip;
+
+zip = <span class="keyword">typeof</span> lottery.drawWinner === <span class="string">"function"</span> ? (ref = lottery.drawWinner().address) != <span class="literal">null</span> ? ref.zipcode : <span class="keyword">void</span> <span class="number">0</span> : <span class="keyword">void</span> <span class="number">0</span>;
+
+</code></pre><script>window.example23 = "zip = lottery.drawWinner?().address?.zipcode;\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example23);'>load</div><br class='clear' /></div>
+
+    <p>
+      <span id="interpolation" class="bookmark"></span>
+      <b class="header">String Interpolation</b>
+      Double-quoted strings allow for interpolated values, using <code>#{ ... }</code>, and single-quoted strings are literal. You may even use interpolation in object keys.
+    </p>
+    <div class='code'><pre><code>author = <span class="string">"Wittgenstein"</span>;
+quote  = <span class="string">"A picture is a fact. -- <span class="subst">#{ author }</span>"</span>;
+
+sentence = <span class="string">"<span class="subst">#{ <span class="number">22</span> / <span class="number">7</span> }</span> is a decent approximation of π"</span>;
+
+</code></pre><pre><code><span class="keyword">var</span> author, quote, sentence;
+
+author = <span class="string">"Wittgenstein"</span>;
+
+quote = <span class="string">"A picture is a fact. -- "</span> + author;
+
+sentence = (<span class="number">22</span> / <span class="number">7</span>) + <span class="string">" is a decent approximation of π"</span>;
+
+</code></pre><script>window.example39 = "author = \"Wittgenstein\";\nquote  = \"A picture is a fact. -- #{ author }\";\n\nsentence = \"#{ 22 / 7 } is a decent approximation of π\";\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example39);'>load</div><div class='minibutton ok' onclick='javascript: var author, quote, sentence;
+
+author = "Wittgenstein";
+
+quote = "A picture is a fact. -- " + author;
+
+sentence = (22 / 7) + " is a decent approximation of π";
+;alert(sentence);'>run: sentence</div><br class='clear' /></div>
+
+    <p>
+      <span id="multiline" class="bookmark"></span>
+      <b class="header">Multiline Strings</b>
+      Multiline strings are allowed in CurlyCS. Lines are joined by a single
+      space unless they end with a backslash. Indentation is ignored.
+    </p>
+    <div class='code'><pre><code>mobyDick = <span class="string">"Call me Ishmael. Some years ago --
+  never mind how long precisely -- having little
+  or no money in my purse, and nothing particular
+  to interest me on shore, I thought I would sail
+  about a little and see the watery part of the
+  world..."</span>;
+
+</code></pre><pre><code><span class="keyword">var</span> mobyDick;
+
+mobyDick = <span class="string">"Call me Ishmael. Some years ago -- never mind how long precisely -- having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world..."</span>;
+
+</code></pre><script>window.example40 = "mobyDick = \"Call me Ishmael. Some years ago --\n  never mind how long precisely -- having little\n  or no money in my purse, and nothing particular\n  to interest me on shore, I thought I would sail\n  about a little and see the watery part of the\n  world...\";\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example40);'>load</div><div class='minibutton ok' onclick='javascript: var mobyDick;
+
+mobyDick = "Call me Ishmael. Some years ago -- never mind how long precisely -- having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world...";
+;alert(mobyDick);'>run: mobyDick</div><br class='clear' /></div>
+
+    <p>
+      <span id="block-strings" class="bookmark"></span>
+      <b class="header">Block Strings</b>
+      Block strings can be used to hold formatted or indentation-sensitive text
+      (or, if you just don't feel like escaping quotes and apostrophes). The
+      indentation level that begins the block is maintained throughout, so
+      you can keep it all aligned with your code.
+    </p>
+    <div class='code'><pre><code>html = <span class="string">"""
+       &lt;strong&gt;
+         cup of coffee
+       &lt;/strong&gt;
+       """</span>;
+
+</code></pre><pre><code><span class="keyword">var</span> html;
+
+html = <span class="string">"&lt;strong&gt;\n  cup of coffee\n&lt;/strong&gt;"</span>;
+
+</code></pre><script>window.example41 = "html = \"\"\"\n       <strong>\n         cup of coffee\n       </strong>\n       \"\"\";\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example41);'>load</div><div class='minibutton ok' onclick='javascript: var html;
+
+html = "<strong>\n  cup of coffee\n</strong>";
+;alert(html);'>run: html</div><br class='clear' /></div>
+    <p>
+      Double-quoted block strings, like other double-quoted strings, allow interpolation.
+    </p>
+
+    <p>
+      <span id="comments" class="bookmark"></span>
+      <b class="header">Block Comments</b>
+      Sometimes you'd like to pass a block comment through to the generated
+      JavaScript. For example, when you need to embed a licensing header at
+      the top of a file. Block comments, which mirror the syntax for block
+      strings, are preserved in the generated code.
+    </p>
+    <div class='code'><pre><code><span class="comment">###
+SkinnyMochaHalfCaffScript Compiler v1.0
+Released under the MIT License
+###</span>
+
+</code></pre><pre><code><span class="comment">/*
+SkinnyMochaHalfCaffScript Compiler v1.0
+Released under the MIT License
+ */</span>
+
+</code></pre><script>window.example42 = "###\nSkinnyMochaHalfCaffScript Compiler v1.0\nReleased under the MIT License\n###\n\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example42);'>load</div><br class='clear' /></div>
+
+    <p>
+      <span id="regexes" class="bookmark"></span>
+      <b class="header">Block Regular Expressions</b>
+      Similar to block strings and comments, CurlyCS supports block regexes &mdash;
+      extended regular expressions that ignore internal whitespace and can contain
+      comments and interpolation. Block regexes are delimited by <code>///</code>
+      and go a long way towards making complex regular expressions readable. To
+      quote from the CurlyCS source:
+    </p>
+    <div class='code'><pre><code>OPERATOR = <span class="regexp">/// ^ (
+  ?: [-=]&gt;             <span class="comment"># function</span>
+   | [-+*/%&lt;&gt;&amp;|^!?=]=  <span class="comment"># compound assign / compare</span>
+   | &gt;&gt;&gt;=?             <span class="comment"># zero-fill right shift</span>
+   | ([-+:])\1         <span class="comment"># doubles</span>
+   | ([&amp;|&lt;&gt;])\2=?      <span class="comment"># logic / shift</span>
+   | \?\.              <span class="comment"># soak access</span>
+   | \.{2,3}           <span class="comment"># range or splat</span>
+) ///</span>;
+
+</code></pre><pre><code><span class="keyword">var</span> OPERATOR;
+
+OPERATOR = <span class="regexp">/^(?:[-=]&gt;|[-+*\/%&lt;&gt;&amp;|^!?=]=|&gt;&gt;&gt;=?|([-+:])\1|([&amp;|&lt;&gt;])\2=?|\?\.|\.{2,3})/</span>;
+
+</code></pre><script>window.example43 = "OPERATOR = /// ^ (\n  ?: [-=]>             # function\n   | [-+*/%<>&|^!?=]=  # compound assign / compare\n   | >>>=?             # zero-fill right shift\n   | ([-+:])\\1         # doubles\n   | ([&|<>])\\2=?      # logic / shift\n   | \\?\\.              # soak access\n   | \\.{2,3}           # range or splat\n) ///;\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example43);'>load</div><br class='clear' /></div>
+
+
+    <h2>
+      <span id="cake" class="bookmark"></span>
+      Cake and Cakefiles
+    </h2>
+
+    <p>
+      CurlyCS includes a (very) simple build system called Cake, and it's used for the tasks that build and test the CurlyCS language itself. Tasks are defined in a file named <code>Cakefile</code>, and can be invoked by running <code>cake [task]</code> from within the directory. To print a list of all the tasks and options, just type <code>cake</code>.
+    </p>
+
+    <p>
+      Task definitions are written in CurlyCS, so you can put arbitrary code in your Cakefile. Define a task with a name, a long description, and the function to invoke when the task is run. If your task takes a command-line option, you can define the option with short and long flags, and it will be made available in the <code>options</code> object. Here's a task that uses the Node.js API to rebuild CurlyCS's parser:
+    </p>
+    <div class='code'><pre><code>fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);
+
+option(<span class="string">'-o'</span>, <span class="string">'--output [DIR]'</span>, <span class="string">'directory for compiled code'</span>);
+
+task(<span class="string">'build:parser'</span>, <span class="string">'rebuild the Jison parser'</span>, <span class="function"><span class="params">(options)</span> -&gt;</span> {
+  <span class="built_in">require</span>(<span class="string">'jison'</span>);
+  code = <span class="built_in">require</span>(<span class="string">'./lib/grammar'</span>).parser.generate();
+  dir  = options.output <span class="keyword">or</span> <span class="string">'lib'</span>;
+  fs.writeFile(<span class="string">"<span class="subst">#{dir}</span>/parser.js"</span>, code);
+});
+
+</code></pre><pre><code><span class="keyword">var</span> fs;
+
+fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);
+
+option(<span class="string">'-o'</span>, <span class="string">'--output [DIR]'</span>, <span class="string">'directory for compiled code'</span>);
+
+task(<span class="string">'build:parser'</span>, <span class="string">'rebuild the Jison parser'</span>, <span class="function"><span class="keyword">function</span><span class="params">(options)</span> {</span>
+  <span class="keyword">var</span> code, dir;
+  <span class="built_in">require</span>(<span class="string">'jison'</span>);
+  code = <span class="built_in">require</span>(<span class="string">'./lib/grammar'</span>).parser.generate();
+  dir = options.output || <span class="string">'lib'</span>;
+  <span class="keyword">return</span> fs.writeFile(dir + <span class="string">"/parser.js"</span>, code);
+});
+
+</code></pre><script>window.example44 = "fs = require('fs');\n\noption('-o', '--output [DIR]', 'directory for compiled code');\n\ntask('build:parser', 'rebuild the Jison parser', (options) -> {\n  require('jison');\n  code = require('./lib/grammar').parser.generate();\n  dir  = options.output or 'lib';\n  fs.writeFile(\"#{dir}/parser.js\", code);\n});"</script><div class='minibutton load' onclick='javascript: loadConsole(example44);'>load</div><br class='clear' /></div>
+    <p>
+      If you need to invoke one task before another &mdash; for example, running
+      <code>build</code> before <code>test</code>, you can use the <code>invoke</code> function:
+      <code>invoke 'build'</code>. Cake tasks are a minimal way to expose your
+      CurlyCS functions to the command line, so
+      don't expect any fanciness built-in.
+      If you need dependencies, or async callbacks, it's best to put them in your
+      code itself &mdash; not the cake task.
+    </p>
+
+    <p>
+      <span id="embedded" class="bookmark"></span>
+      <b class="header">Embedded JavaScript</b>
+      Hopefully, you'll never need to use it, but if you ever need to intersperse
+      snippets of JavaScript within your CurlyCS, you can
+      use backticks to pass it straight through.
+    </p>
+    <div class='code'><pre><code>hi = `<span class="javascript"><span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">return</span> [document.title, <span class="string">"Hello JavaScript"</span>].join(<span class="string">": "</span>);
+}</span>`;
+
+</code></pre><pre><code><span class="keyword">var</span> hi;
+
+hi = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">return</span> [document.title, <span class="string">"Hello JavaScript"</span>].join(<span class="string">": "</span>);
+}
+
+</code></pre><script>window.example34 = "hi = `function() {\n  return [document.title, \"Hello JavaScript\"].join(\": \");\n}`;\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example34);'>load</div><div class='minibutton ok' onclick='javascript: var hi;
+
+hi = function() {
+  return [document.title, "Hello JavaScript"].join(": ");
+}
+;alert(hi());'>run: hi()</div><br class='clear' /></div>
+
+
+    <h2>
+      <span id="installation" class="bookmark"></span>
+      Installation
+    </h2>
+
+    <p>
+      The CurlyCS compiler itself has been completely implemented in CurlyCS, using the <a href="http://jison.org">Jison parser generator</a>. The command-line version of <code>curly-cs</code> is available as a <a href="http://nodejs.org/">Node.js</a> utility. The <a href="extras/curly-cs.js">core compiler</a>, however, does not depend on Node, and can be run in any JavaScript environment, or in the browser (see "Try CurlyCS", above).
+    </p>
+
+    <p>
+      To install, first make sure you have a working copy of the latest stable version of
+      <a href="http://nodejs.org/">Node.js</a>. You can then install CurlyCS globally
+      with <a href="http://npmjs.org">npm</a>:
+    </p>
+
+    <pre>npm install -g curly-cs</pre>
+
+    <p>
+      If you'd prefer to install the latest <b>master</b> version of CurlyCS, you can clone the CurlyCS <a href="http://github.com/FeijianSun/CurlyCS">source repository</a> from GitHub, or download <a href="http://github.com/FeijianSun/CurlyCS/tarball/master">the source</a> directly.
+    </p>
+
+    <h2>
+      <span id="usage" class="bookmark"></span>
+      Usage
+    </h2>
+
+    <p>
+      Once installed, you should have access to the <code>ccs</code> command,
+      which can execute scripts, compile <code>.ccs</code> files into <code>.js</code>,
+      and provide an interactive REPL. The <code>ccs</code> command takes the
+      following options:
+    </p>
+
+    <table>
+      <tr>
+        <td><code>-c, --compile</code></td>
+        <td>
+          Compile a <code>.ccs</code> script into a <code>.js</code> JavaScript file
+          of the same name.
+        </td>
+      </tr>
+      <tr>
+        <td><code>-m, --map</code></td>
+        <td>
+          Generate source maps alongside the compiled JavaScript files. Adds
+          <code>sourceMappingURL</code> directives to the JavaScript as well.
+        </td>
+      </tr>
+      <tr>
+        <td width="25%"><code>-i, --interactive</code></td>
+        <td>
+          Launch an interactive CurlyCS session to try short snippets.
+          Identical to calling <code>ccs</code> with no arguments.
+        </td>
+      </tr>
+      <tr>
+        <td><code>-o, --output [DIR]</code></td>
+        <td>
+          Write out all compiled JavaScript files into the specified directory.
+          Use in conjunction with <code>--compile</code> or <code>--watch</code>.
+        </td>
+      </tr>
+      <tr>
+        <td><code>-j, --join [FILE]</code></td>
+        <td>
+          Before compiling, concatenate all scripts together in the order they
+          were passed, and write them into the specified file.
+          Useful for building large projects.
+        </td>
+      </tr>
+      <tr>
+        <td><code>-w, --watch</code></td>
+        <td>
+          Watch files for changes, rerunning the specified command when any
+          file is updated.
+        </td>
+      </tr>
+      <tr>
+        <td><code>-p, --print</code></td>
+        <td>
+          Instead of writing out the JavaScript as a file, print it
+          directly to <b>stdout</b>.
+        </td>
+      </tr>
+      <tr>
+        <td><code>-s, --stdio</code></td>
+        <td>
+          Pipe in CurlyCS to STDIN and get back JavaScript over STDOUT.
+          Good for use with processes written in other languages. An example:<br />
+          <code>cat src/cake.ccs | ccs -sc</code>
+        </td>
+      </tr>
+      <tr>
+        <td><code>-l, --literate</code></td>
+        <td>
+          Parses the code as Literate CurlyCS. You only need to specify
+          this when passing in code directly over <b>stdio</b>, or using some sort
+          of extension-less file name.
+        </td>
+      </tr>
+      <tr>
+        <td><code>-e, --eval</code></td>
+        <td>
+          Compile and print a little snippet of CurlyCS directly from the
+          command line. For example:<br /><code>ccs -e "console.log(num for num in [10..1])"</code>
+        </td>
+      </tr>
+      <tr>
+        <td><code>-b, --bare</code></td>
+        <td>
+          Compile the JavaScript without the
+          <a href="#scoping">top-level function safety wrapper</a>.
+        </td>
+      </tr>
+      <tr>
+        <td><code>-t, --tokens</code></td>
+        <td>
+          Instead of parsing the CurlyCS, just lex it, and print out the
+          token stream: <code>[IDENTIFIER square] [ASSIGN =] [PARAM_START (]</code> ...
+        </td>
+      </tr>
+      <tr>
+        <td><code>-n, --nodes</code></td>
+        <td>
+          Instead of compiling the CurlyCS, just lex and parse it, and print
+          out the parse tree:
+<pre class="no_bar">
+Expressions
+  Assign
+    Value "square"
+    Code "x"
+      Op *
+        Value "x"
+        Value "x"</pre>
+        </td>
+      </tr>
+      <tr>
+        <td><code>--nodejs</code></td>
+        <td>
+          The <code>node</code> executable has some useful options you can set,
+          such as<br /> <code>--debug</code>, <code>--debug-brk</code>, <code>--max-stack-size</code>,
+          and <code>--expose-gc</code>. Use this flag to forward options directly to Node.js.
+          To pass multiple flags, use <code>--nodejs</code> multiple times.
+        </td>
+      </tr>
+    </table>
+
+    <p>
+      <b>Examples:</b>
+    </p>
+
+    <ul>
+      <li>
+        Compile a directory tree of <code>.ccs</code> files in <code>src</code> into a parallel
+        tree of <code>.js</code> files in <code>lib</code>:<br />
+        <code>ccs --compile --output lib/ src/</code>
+      </li>
+      <li>
+        Watch a file for changes, and recompile it every time the file is saved:<br />
+        <code>ccs --watch --compile experimental.ccs</code>
+      </li>
+      <li>
+        Concatenate a list of files into a single script:<br />
+        <code>ccs --join project.js --compile src/*.ccs</code>
+      </li>
+      <li>
+        Print out the compiled JS from a one-liner:<br />
+        <code>ccs -bpe "alert(i) for i in [0..10]"</code>
+      </li>
+      <li>
+        All together now, watch and recompile an entire project as you work on it:<br />
+        <code>ccs -o lib/ -cw src/</code>
+      </li>
+      <li>
+        Start the CurlyCS REPL (<code>Ctrl-D</code> to exit, <code>Ctrl-V</code>for multi-line):<br />
+        <code>ccs</code>
+      </li>
+    </ul>
+
+    <h2>
+      <span id="scripts" class="bookmark"></span>
+      Script Tag
+    </h2>
+
+    <p>
+      While it's not recommended for serious use, CurlyCS code may be included directly within the browser using <code>&lt;script type="text/curlycs"&gt;</code> tags. The source contains a compressed and minified version of the compiler (<a href="extras/curly-cs.js">download the current version here</a>) as <code>extras/curly-cs.js</code>. Include the compiler on a web page with inline CurlyCS tags, and it will compile and evaluate them in order.
+    </p>
+
+    <p>
+      In fact, the little bit of glue script that runs "Try CurlyCS" above is implemented in just this way. View source and look at the bottom of the page to see the example. Including the compiler also gives you access to <code>CurlyCS.compile()</code> so you can pop open Firebug and try compiling some strings.
+    </p>
+
+    <p>
+      The usual caveat about CurlyCS apply &mdash; your inline code will run within a closure wrapper, so if you want to expose global variables or functions, attach them to the <code>window</code> object.
+    </p>
+  </div>
+
+  <script type="text/curlycs">
+    sourceFragment = "try:";
+
+    # Set up the compilation function, to run when you stop typing.
+    compileSource = -> {
+      source = $('#repl_source').val();
+      results = $('#repl_results');
+      window.compiledJS = '';
+      try {
+        window.compiledJS = CurlyCS.compile(source, { bare: on });
+        el = results[0];
+        if el.innerText {
+          el.innerText = window.compiledJS;
+        } else {
+          results.text(window.compiledJS);
+        }
+        results.removeClass('error');
+        $('.minibutton.run').removeClass('error');
+      } catch {location: location, message: message} {
+        if location? {
+          message = "Error on line #{location.first_line + 1}: #{message}";
+        }
+        results.text(message).addClass('error');
+        $('.minibutton.run').addClass('error');
+      }
+
+#
+# FSun, 05/16/2016: 
+#
+#       # Update permalink
+#       $('#repl_permalink').attr('href', 
+#       "##{sourceFragment}#{encodeURIComponent(source)}");
+    }
+
+    # Listen for keypresses and recompile.
+    $('#repl_source').keyup(-> { compileSource(); });
+
+    # Eval the compiled js.
+    evalJS = -> {
+      try { eval(window.compiledJS); } catch error { alert(error) };    
+    }
+
+    # Load the console with a string of CurlyCS.
+    window.loadConsole = (curly) -> {
+      $('#repl_source').val(curly);
+      compileSource();
+      $('.navigation.try').addClass('active');
+      false;
+    }
+
+    # Helper to hide the menus.
+    closeMenus = -> {
+      $('.navigation.active').removeClass('active');
+    }
+
+    $('.minibutton.run').click(-> { evalJS(); });
+
+    # Bind navigation buttons to open the menus.
+    $('.navigation').click((e) -> {
+      return if e.target.tagName.toLowerCase() is 'a';
+      return false if $(e.target).closest('.repl_wrapper').length;
+      if $(this).hasClass('active') {
+        closeMenus();
+      } else {
+        closeMenus();
+        $(this).addClass('active');     
+      }
+      false;
+    });
+
+    # Dismiss console if Escape pressed or click falls outside console
+    # Trigger Run button on Ctrl-Enter
+    $(document.body)
+      .keydown((e) -> {
+        closeMenus() if e.which == 27;
+        evalJS() if e.which == 13 and (e.metaKey or e.ctrlKey) and $('.minibutton.run:visible').length;
+      })
+      .click((e) -> {
+        return false if $(e.target).hasClass('minibutton');
+        closeMenus();
+      });
+
+    $('#open_webchat').click(-> {
+      $(this).replaceWith($('<iframe src="http://webchat.freenode.net/?channels=curlycs" width="625" height="400"></iframe>'));
+    });
+
+#
+# FSun, 05/16/2016: 
+#
+#     $("#repl_permalink").click((e) -> {
+#         window.location = $(this).attr("href");
+#         false;
+#     });
+
+    # If source code is included in location.hash, display it.
+    hash = decodeURIComponent(location.hash.replace(/^#/, ''));
+    if hash.indexOf(sourceFragment) == 0 {
+        src = hash.substr(sourceFragment.length);
+        loadConsole(src);
+    }
+
+    compileSource();
+  </script>
+  <script src="documentation/vendor/jquery-1.6.4.js"></script>
+  <script src="extras/curly-cs.js"></script>
+
+</body>
+</html>

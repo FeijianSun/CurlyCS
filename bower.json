@@ -1,0 +1,29 @@
+{
+  "name": "curly-cs",
+  "version": "0.01.1",
+  "main": [
+    "lib/curly-cs/curly-cs.js"
+  ],
+  "description": "Curly-Brace Variant of CoffeeScript",
+  "keywords": [
+    "curlycs",
+    "coffeescript",
+    "javascript",
+    "language",
+    "compiler"
+  ],
+  "devDependencies": {
+    "coffee-script": "~1.10.0",
+    "uglify-js": "~2.2",
+    "jison": ">=0.2.0",
+    "highlight.js": "~8.0.0",
+    "underscore": "~1.5.2",
+    "docco": "~0.6.2"
+  },
+  "author": {
+    "name": "Feijian Sun"
+  },
+  "ignore": [
+    "test"
+  ]
+}

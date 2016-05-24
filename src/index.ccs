@@ -1,0 +1,2 @@
+# Loader for CurlyCS as a Node.js library.
+exports[key] = val for key, val of require('./curly-cs');
