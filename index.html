@@ -17,11 +17,6 @@
 
     <div class="navigation overview">
       <div class="button">
-        <a class="button" href="#overview">vs. CoffeeScript</a>
-      </div>
-    </div>
-    <div class="navigation">
-      <div class="button">
         Language Reference
       </div>
       <div class="contents menu">
@@ -50,6 +45,11 @@
         <a href="#regexes">Block Regular Expressions</a>
         <a href="#embedded">Embedded JavaScript</a>
         <a href="#cake">Cake and Cakefiles</a>
+      </div>
+    </div>
+    <div class="navigation">
+      <div class="button">
+        <a class="button" href="#overview">vs. CoffeeScript</a>
       </div>
     </div>
     <div class="navigation try">
@@ -117,256 +117,6 @@
 
     <pre>npm install -g curly-cs</pre>
 
-    <h2>
-      <span id="overview" class="bookmark"></span>
-      CurlyCS vs. CoffeeScript
-    </h2>
-    <p>
-      Except for having a different syntax, CurlyCS is just <a href="http://coffeescript.org/">CoffeeScript</a>. The compiled outputs of CurlyCS code and its equivalent CoffeeScript code are the same JavaScript code. This section presents all of major syntax differences between CurlyCS and CoffeeScript.
-    </p>
-
-    <p><i>CurlyCS code on the left, equivalent CoffeeScript code on the right.</i></p>
-<ul>
-  <li>
-    <p>Code blocks, such as function and class bodies, conditional and loop statements, try/catch, etc., must be surrounded with curly braces <code>{ }</code> in CurlyCS instead of indentation.</p>
-  </li>
-</ul>
-    <div class='code'><pre><code><span class="function"><span class="title">grade</span> = <span class="params">(student)</span> -&gt;</span> {
-  <span class="keyword">if</span> student.excellentWork {
-    <span class="string">"A+"</span>
-  } <span class="keyword">else</span> <span class="keyword">if</span> student.okayStuff {
-    <span class="keyword">if</span> student.triedHard { <span class="string">"B"</span> } <span class="keyword">else</span> { <span class="string">"B-"</span> }
-  } <span class="keyword">else</span> {
-    <span class="string">"C"</span>
-  }
-}
-
-<span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span> {
-  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>)</span> -&gt;</span> { },
-  <span class="attribute">move</span>: <span class="function"><span class="params">(meters)</span> -&gt;</span> {
-    alert(<span class="property">@name</span> + <span class="string">" moved <span class="subst">#{meters}</span>m."</span>)
-  }
-}
-
-grade = <span class="keyword">switch</span> {
-  <span class="keyword">when</span> score &lt; <span class="number">60</span> { <span class="string">'F'</span> }
-  <span class="keyword">when</span> score &lt; <span class="number">70</span> { <span class="string">'D'</span> }
-  <span class="keyword">when</span> score &lt; <span class="number">80</span> { <span class="string">'C'</span> }
-  <span class="keyword">when</span> score &lt; <span class="number">90</span> { <span class="string">'B'</span> }
-  <span class="keyword">else</span> { <span class="string">'A'</span> }
-}
-
-ages = <span class="keyword">for</span> child, age <span class="keyword">of</span> yearsOld {
-  <span class="string">"<span class="subst">#{child}</span> is <span class="subst">#{age}</span>"</span>
-}
-
-<span class="keyword">try</span> {
-  catsAndDogsLivingTogether()
-} <span class="keyword">catch</span> error {
-  <span class="built_in">print</span>(error)
-} <span class="keyword">finally</span> {
-  cleanUp()
-}
-
-    </code></pre><pre><code><span class="function"><span class="title">grade</span> = <span class="params">(student)</span> -&gt;</span>
-  <span class="keyword">if</span> student.excellentWork
-    <span class="string">"A+"</span>;
-  <span class="keyword">else</span> <span class="keyword">if</span> student.okayStuff
-    <span class="keyword">if</span> student.triedHard <span class="keyword">then</span> <span class="string">"B"</span> <span class="keyword">else</span> <span class="string">"B-"</span>
-  <span class="keyword">else</span>
-    <span class="string">"C"</span>
-
-<span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span>
-  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>)</span> -&gt;</span>
-  <span class="attribute">move</span>: <span class="function"><span class="params">(meters)</span> -&gt;</span>
-    alert <span class="property">@name</span> + <span class="string">" moved <span class="subst">#{meters}</span>m."</span>
-
-grade = <span class="keyword">switch</span>
-  <span class="keyword">when</span> score &lt; <span class="number">60</span> <span class="keyword">then</span> <span class="string">'F'</span>
-  <span class="keyword">when</span> score &lt; <span class="number">70</span> <span class="keyword">then</span> <span class="string">'D'</span>
-  <span class="keyword">when</span> score &lt; <span class="number">80</span> <span class="keyword">then</span> <span class="string">'C'</span>
-  <span class="keyword">when</span> score &lt; <span class="number">90</span> <span class="keyword">then</span> <span class="string">'B'</span>
-  <span class="keyword">else</span> <span class="string">'A'</span>
-
-ages = <span class="keyword">for</span> child, age <span class="keyword">of</span> yearsOld
-  <span class="string">"<span class="subst">#{child}</span> is <span class="subst">#{age}</span>"</span>
-
-<span class="keyword">try</span>
-  catsAndDogsLivingTogether()
-<span class="keyword">catch</span> error
-  <span class="built_in">print</span> error
-<span class="keyword">finally</span>
-  cleanUp();
-
-    </code></pre><script>window.difference1 = "grade = (student) -> {\n  if student.excellentWork {\n    \"A+\";\n  } else if student.okayStuff {\n    if student.triedHard { \"B\" } else { \"B-\" };\n  } else {\n    \"C\";\n  }\n}\n\nclass Animal {\n  constructor: (@name) -> { },\n\n  move: (meters) -> {\n    alert(@name + \" moved #{meters}m.\");\n  }\n}\n\ngrade = switch {\n  when score < 60 { 'F' }\n  when score < 70 { 'D' }\n  when score < 80 { 'C' }\n  when score < 90 { 'B' }\n  else { 'A' }\n}\n\nages = for child, age of yearsOld {\n  \"#{child} is #{age}\";\n}\n\ntry {\n  allHellBreaksLoose();\n  catsAndDogsLivingTogether();\n} catch error {\n  print(error);\n} finally {\n  cleanUp();\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference1);'>load</div><br class='clear' /></div>
-
-<ul>
-  <li>
-    <p>In CurlyCS, any statement that isn't the last one in a script or a block, must be terminated with a semicolon <code>;</code> when it is not in class bodies or a comma <code>,</code> when it is. Blocks don't need terminators.</p>
-  </li>
-</ul>
-    <div class='code'><pre><code>singers = {<span class="attribute">Jagger</span>: <span class="string">"Rock"</span>, <span class="attribute">Elvis</span>: <span class="string">"Roll"</span>};
-
-outer = <span class="number">1</span>;
-<span class="function"><span class="title">changeNumbers</span> = -&gt;</span> {
-  inner = -<span class="number">1</span>;
-  outer = <span class="number">10</span>  <span class="comment"># the last statement in the block</span>
-}
-
-cleanUp();
-
-<span class="comment"># the last statement in the script</span>
-countdown = (num <span class="keyword">for</span> num <span class="keyword">in</span> [<span class="number">10.</span><span class="number">.1</span>])
-
-    </code></pre><pre><code>singers = {<span class="attribute">Jagger</span>: <span class="string">"Rock"</span>, <span class="attribute">Elvis</span>: <span class="string">"Roll"</span>}
-
-outer = <span class="number">1</span>
-<span class="function"><span class="title">changeNumbers</span> = -&gt;</span>
-  inner = -<span class="number">1</span>
-  outer = <span class="number">10</span>
-
-cleanUp()
-
-countdown = (num <span class="keyword">for</span> num <span class="keyword">in</span> [<span class="number">10.</span><span class="number">.1</span>])
-
-    </code></pre><script>window.difference2 = "singers = {Jagger: \"Rock\", Elvis: \"Roll\"};\n\nouter = 1;\nchangeNumbers = -> {\n  inner = -1;\n  outer = 10;  # the last statement in the block\n}\n\ncleanUp();\n\n# the last statement in the script\ncountdown = (num for num in [10..1]);\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference2);'>load</div><br class='clear' /></div>
-
-<ul>
-  <li>
-    <p>In CurlyCS, the arguments  of a function must be wrapped in parentheses <code>( )</code>. An empty parentheses <code>()</code> is needed for invoking a function with no arguments but is optional for defining it.</p>
-  </li>
-</ul>
-    <div class='code'><pre><code><span class="function"><span class="title">cube</span> = <span class="params">(x)</span> -&gt;</span> { square(x) * x }
-
-times(plus(1, 2), minus(3, 4));
-
-r = f([1]);
-
-<span class="function"><span class="title">sayHi</span> = -&gt;</span> { alert("Hi") }
-
-sayHi()
-
-    </code></pre><pre><code><span class="function"><span class="title">cube</span> = <span class="params">x</span> -&gt;</span> square(x) * x
-
-times plus 1, 2, minus 3, 4
-
-r = f [1]  # Here is a function call, not the same as 'f[1]'
-
-<span class="function"><span class="title">sayHi</span> = -&gt;</span> alert "Hi"
-
-sayHi()
-
-    </code></pre><script>window.difference3 = "cube = (x) -> { square(x) * x; }\n\ntimes(plus(1, 2), minus(3, 4));\n\nr = f([1]);\n\nsayHi = -> { alert(\"Hi\") }\n\nsayHi()\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference3);'>load</div><br class='clear' /></div>
-
-<ul>
-  <li>
-    <p>In CurlyCS, objects must be created using explicit curly braces. Elements in arrays and objects must be separated by commas <code>,</code> instead of indentations.</p>
-  </li>
-</ul>
-    <div class='code'><pre><code>bitlist = [
-  <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>,
-  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>,
-  <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>
-];
-
-kids = {
-  <span class="attribute">brother</span>: {
-    <span class="attribute">name</span>: <span class="string">"Max"</span>,
-    <span class="attribute">age</span>:  <span class="number">11</span>
-  },
-  <span class="attribute">sister</span>: {
-    <span class="attribute">name</span>: <span class="string">"Ida"</span>,
-    <span class="attribute">age</span>:  <span class="number">9</span>
-  }
-};
-
-    </code></pre><pre><code>bitlist = [
-  <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>
-  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>
-  <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>
-]
-
-kids = 
-  <span class="attribute">brother</span>: 
-    <span class="attribute">name</span>: <span class="string">"Max"</span>
-    <span class="attribute">age</span>:  <span class="number">11</span>
-  <span class="attribute">sister</span>: 
-    <span class="attribute">name</span>: <span class="string">"Ida"</span>
-    <span class="attribute">age</span>:  <span class="number">9</span>
-
-    </code></pre><script>window.difference4 = "bitlist = [\n  1, 0, 1,\n  0, 0, 1,\n  1, 1, 0\n];\n\nkids = {\n  brother: {\n    name: \"Max\",\n    age:  11\n  },\n  sister: {\n    name: \"Ida\",\n    age:  9\n  }\n};\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference4);'>load</div><br class='clear' /></div>
-
-<ul>
-  <li>
-    <p>In CurlyCS, an empty object is written as <code>{:}</code> while an empty curly braces <code>{}</code> represents an empty block.</p>
-  </li>
-</ul>
-    <div class='code'><pre><code><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span> {
-  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>, options = {:})</span> -&gt;</span> {}
-}
-
-    </code></pre><pre><code><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>
-  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>, options = {})</span> -&gt;</span>
-
-    </code></pre><script>window.difference5 = "class Person {\n  constructor: (@name, options = {:}) -> {}\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference5);'>load</div><br class='clear' /></div>
-
-<ul>
-  <li>
-    <p>In CurlyCS, a colon <code>:</code> is needed in front of the element name in the shorthand notation for objects.</p>
-  </li>
-</ul>
-    <div class='code'><pre><code>{<span class="property">:name</span>, <span class="property">:age</span>, <span class="property">:height</span> = <span class="string">'average'</span>} = { <span class="attribute">name</span>: <span class="string">'Tim'</span>, <span class="attribute">age</span>: <span class="number">4</span> };
-
-    </code></pre><pre><code>{<span class="property">name</span>, <span class="property">age</span>, <span class="property">height</span> = <span class="string">'average'</span>} = { <span class="attribute">name</span>: <span class="string">'Tim'</span>, <span class="attribute">age</span>: <span class="number">4</span> }
-
-    </code></pre><script>window.difference6 = "{:name, :age, :height = 'average'} = { name: 'Tim', age: 4 };\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference6);'>load</div><br class='clear' /></div>
-
-<ul>
-  <li>
-    <p>The keyword <code>then</code> used for writing single line statements in CoffeeScript is dropped in CurlyCS.</p>
-  </li>
-</ul>
-    <div class='code'><pre><code>date = <span class="keyword">if</span> friday { sue } <span class="keyword">else</span> { jill }
-
-<span class="keyword">for</span> prop <span class="keyword">in</span> properties <span class="keyword">when</span> prop.isValid { return yes }
-
-    </code></pre><pre><code>date = <span class="keyword">if</span> friday <span class="keyword">then</span> sue <span class="keyword">else</span> jill
-
-<span class="keyword">for</span> prop <span class="keyword">in</span> properties <span class="keyword">when</span> prop.isValid <span class="keyword">then</span> return yes
-
-    </code></pre><script>window.difference7 = "date = if friday { sue } else { jill }\n\nfor prop in properties when prop.isValid { return yes }\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference7);'>load</div><br class='clear' /></div>
-
-<ul>
-  <li>
-    <p>Logical operator <code>?</code> in CoffeeScript is replaced with <code>??</code> in CurlyCS. So whitespace is no longer needed to differentiate between logical existential operators.</p>
-  </li>
-</ul>
-    <div class='code'><pre><code><span class="comment"># Both '?' are existential operators</span>
-solipsism = <span class="literal">true</span> <span class="keyword">if</span> mind ? <span class="keyword">and</span> <span class="keyword">not</span> world?;
-
-<span class="comment"># Here is logical operator '??'</span>
-footprints = yeti ?? <span class="string">"bear"</span>;
-
-    </code></pre><pre><code><span class="comment"># '?' must be right behind the variables</span>
-solipsism = <span class="literal">true</span> <span class="keyword">if</span> mind? <span class="keyword">and</span> <span class="keyword">not</span> world?
-
-<span class="comment"># There must be a space in front of '?'</span>
-footprints = yeti ? <span class="string">"bear"</span>
-
-    </code></pre><script>window.difference8= "# Both '?' are existential operators\nsolipsism = true if mind ? and not world?;\n\n# Here is logical operator '??'\nfootprints = yeti ?? \"bear\";\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference8);'>load</div><br class='clear' /></div>
-
-<ul>
-  <li>
-    <p>CoffeeScript allows to declare variables inside <code>class</code> definitions using assignment statements <code>=</code>. Such behavior is banned in CurlyCS.</p>
-  </li>
-</ul>
-    <div class='code'><pre><code>
-
-    </code></pre><pre><code><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>
-  <span class="attribute">b</span> : 'c'  <span class="comment"># define instance property</span>
-  <span class="attribute">d</span> = 'e'  <span class="comment"># define temporary var</span>
-
-    </code></pre><br class='clear' /></div>
 
     <h2>
       <span id="language" class="bookmark"></span>
@@ -2086,6 +1836,30 @@ OPERATOR = <span class="regexp">/^(?:[-=]&gt;|[-+*\/%&lt;&gt;&amp;|^!?=]=|&gt;&g
 
 </code></pre><script>window.example43 = "OPERATOR = /// ^ (\n  ?: [-=]>             # function\n   | [-+*/%<>&|^!?=]=  # compound assign / compare\n   | >>>=?             # zero-fill right shift\n   | ([-+:])\\1         # doubles\n   | ([&|<>])\\2=?      # logic / shift\n   | \\?\\.              # soak access\n   | \\.{2,3}           # range or splat\n) ///;\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example43);'>load</div><br class='clear' /></div>
 
+    <p>
+      <span id="embedded" class="bookmark"></span>
+      <b class="header">Embedded JavaScript</b>
+      Hopefully, you'll never need to use it, but if you ever need to intersperse
+      snippets of JavaScript within your CurlyCS, you can
+      use backticks to pass it straight through.
+    </p>
+    <div class='code'><pre><code>hi = `<span class="javascript"><span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">return</span> [document.title, <span class="string">"Hello JavaScript"</span>].join(<span class="string">": "</span>);
+}</span>`;
+
+</code></pre><pre><code><span class="keyword">var</span> hi;
+
+hi = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
+  <span class="keyword">return</span> [document.title, <span class="string">"Hello JavaScript"</span>].join(<span class="string">": "</span>);
+}
+
+</code></pre><script>window.example34 = "hi = `function() {\n  return [document.title, \"Hello JavaScript\"].join(\": \");\n}`;\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example34);'>load</div><div class='minibutton ok' onclick='javascript: var hi;
+
+hi = function() {
+  return [document.title, "Hello JavaScript"].join(": ");
+}
+;alert(hi());'>run: hi()</div><br class='clear' /></div>
+
 
     <h2>
       <span id="cake" class="bookmark"></span>
@@ -2135,29 +1909,258 @@ task(<span class="string">'build:parser'</span>, <span class="string">'rebuild t
       code itself &mdash; not the cake task.
     </p>
 
+
+    <h2>
+      <span id="overview" class="bookmark"></span>
+      CurlyCS vs. CoffeeScript
+    </h2>
     <p>
-      <span id="embedded" class="bookmark"></span>
-      <b class="header">Embedded JavaScript</b>
-      Hopefully, you'll never need to use it, but if you ever need to intersperse
-      snippets of JavaScript within your CurlyCS, you can
-      use backticks to pass it straight through.
+      Except for having a different syntax, CurlyCS is just <a href="http://coffeescript.org/">CoffeeScript</a>. The compiled outputs of CurlyCS code and its equivalent CoffeeScript code are the same JavaScript code. This section presents all of major syntax differences between CurlyCS and CoffeeScript.
     </p>
-    <div class='code'><pre><code>hi = `<span class="javascript"><span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="keyword">return</span> [document.title, <span class="string">"Hello JavaScript"</span>].join(<span class="string">": "</span>);
-}</span>`;
 
-</code></pre><pre><code><span class="keyword">var</span> hi;
-
-hi = <span class="function"><span class="keyword">function</span><span class="params">()</span> {</span>
-  <span class="keyword">return</span> [document.title, <span class="string">"Hello JavaScript"</span>].join(<span class="string">": "</span>);
+    <p><i>CurlyCS code on the left, equivalent CoffeeScript code on the right.</i></p>
+<ul>
+  <li>
+    <p>Code blocks, such as function and class bodies, conditional and loop statements, try/catch, etc., must be surrounded with curly braces <code>{ }</code> in CurlyCS instead of indentation.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code><span class="function"><span class="title">grade</span> = <span class="params">(student)</span> -&gt;</span> {
+  <span class="keyword">if</span> student.excellentWork {
+    <span class="string">"A+"</span>
+  } <span class="keyword">else</span> <span class="keyword">if</span> student.okayStuff {
+    <span class="keyword">if</span> student.triedHard { <span class="string">"B"</span> } <span class="keyword">else</span> { <span class="string">"B-"</span> }
+  } <span class="keyword">else</span> {
+    <span class="string">"C"</span>
+  }
 }
 
-</code></pre><script>window.example34 = "hi = `function() {\n  return [document.title, \"Hello JavaScript\"].join(\": \");\n}`;\n"</script><div class='minibutton load' onclick='javascript: loadConsole(example34);'>load</div><div class='minibutton ok' onclick='javascript: var hi;
-
-hi = function() {
-  return [document.title, "Hello JavaScript"].join(": ");
+<span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span> {
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>)</span> -&gt;</span> { },
+  <span class="attribute">move</span>: <span class="function"><span class="params">(meters)</span> -&gt;</span> {
+    alert(<span class="property">@name</span> + <span class="string">" moved <span class="subst">#{meters}</span>m."</span>)
+  }
 }
-;alert(hi());'>run: hi()</div><br class='clear' /></div>
+
+grade = <span class="keyword">switch</span> {
+  <span class="keyword">when</span> score &lt; <span class="number">60</span> { <span class="string">'F'</span> }
+  <span class="keyword">when</span> score &lt; <span class="number">70</span> { <span class="string">'D'</span> }
+  <span class="keyword">when</span> score &lt; <span class="number">80</span> { <span class="string">'C'</span> }
+  <span class="keyword">when</span> score &lt; <span class="number">90</span> { <span class="string">'B'</span> }
+  <span class="keyword">else</span> { <span class="string">'A'</span> }
+}
+
+ages = <span class="keyword">for</span> child, age <span class="keyword">of</span> yearsOld {
+  <span class="string">"<span class="subst">#{child}</span> is <span class="subst">#{age}</span>"</span>
+}
+
+<span class="keyword">try</span> {
+  catsAndDogsLivingTogether()
+} <span class="keyword">catch</span> error {
+  <span class="built_in">print</span>(error)
+} <span class="keyword">finally</span> {
+  cleanUp()
+}
+
+    </code></pre><pre><code><span class="function"><span class="title">grade</span> = <span class="params">(student)</span> -&gt;</span>
+  <span class="keyword">if</span> student.excellentWork
+    <span class="string">"A+"</span>;
+  <span class="keyword">else</span> <span class="keyword">if</span> student.okayStuff
+    <span class="keyword">if</span> student.triedHard <span class="keyword">then</span> <span class="string">"B"</span> <span class="keyword">else</span> <span class="string">"B-"</span>
+  <span class="keyword">else</span>
+    <span class="string">"C"</span>
+
+<span class="class"><span class="keyword">class</span> <span class="title">Animal</span></span>
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>)</span> -&gt;</span>
+  <span class="attribute">move</span>: <span class="function"><span class="params">(meters)</span> -&gt;</span>
+    alert <span class="property">@name</span> + <span class="string">" moved <span class="subst">#{meters}</span>m."</span>
+
+grade = <span class="keyword">switch</span>
+  <span class="keyword">when</span> score &lt; <span class="number">60</span> <span class="keyword">then</span> <span class="string">'F'</span>
+  <span class="keyword">when</span> score &lt; <span class="number">70</span> <span class="keyword">then</span> <span class="string">'D'</span>
+  <span class="keyword">when</span> score &lt; <span class="number">80</span> <span class="keyword">then</span> <span class="string">'C'</span>
+  <span class="keyword">when</span> score &lt; <span class="number">90</span> <span class="keyword">then</span> <span class="string">'B'</span>
+  <span class="keyword">else</span> <span class="string">'A'</span>
+
+ages = <span class="keyword">for</span> child, age <span class="keyword">of</span> yearsOld
+  <span class="string">"<span class="subst">#{child}</span> is <span class="subst">#{age}</span>"</span>
+
+<span class="keyword">try</span>
+  catsAndDogsLivingTogether()
+<span class="keyword">catch</span> error
+  <span class="built_in">print</span> error
+<span class="keyword">finally</span>
+  cleanUp();
+
+    </code></pre><script>window.difference1 = "grade = (student) -> {\n  if student.excellentWork {\n    \"A+\";\n  } else if student.okayStuff {\n    if student.triedHard { \"B\" } else { \"B-\" };\n  } else {\n    \"C\";\n  }\n}\n\nclass Animal {\n  constructor: (@name) -> { },\n\n  move: (meters) -> {\n    alert(@name + \" moved #{meters}m.\");\n  }\n}\n\ngrade = switch {\n  when score < 60 { 'F' }\n  when score < 70 { 'D' }\n  when score < 80 { 'C' }\n  when score < 90 { 'B' }\n  else { 'A' }\n}\n\nages = for child, age of yearsOld {\n  \"#{child} is #{age}\";\n}\n\ntry {\n  allHellBreaksLoose();\n  catsAndDogsLivingTogether();\n} catch error {\n  print(error);\n} finally {\n  cleanUp();\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference1);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, any statement that isn't the last one in a script or a block, must be terminated with a semicolon <code>;</code> when it is not in class bodies or a comma <code>,</code> when it is. Blocks don't need terminators.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code>singers = {<span class="attribute">Jagger</span>: <span class="string">"Rock"</span>, <span class="attribute">Elvis</span>: <span class="string">"Roll"</span>};
+
+outer = <span class="number">1</span>;
+<span class="function"><span class="title">changeNumbers</span> = -&gt;</span> {
+  inner = -<span class="number">1</span>;
+  outer = <span class="number">10</span>  <span class="comment"># the last statement in the block</span>
+}
+
+cleanUp();
+
+<span class="comment"># the last statement in the script</span>
+countdown = (num <span class="keyword">for</span> num <span class="keyword">in</span> [<span class="number">10.</span><span class="number">.1</span>])
+
+    </code></pre><pre><code>singers = {<span class="attribute">Jagger</span>: <span class="string">"Rock"</span>, <span class="attribute">Elvis</span>: <span class="string">"Roll"</span>}
+
+outer = <span class="number">1</span>
+<span class="function"><span class="title">changeNumbers</span> = -&gt;</span>
+  inner = -<span class="number">1</span>
+  outer = <span class="number">10</span>
+
+cleanUp()
+
+countdown = (num <span class="keyword">for</span> num <span class="keyword">in</span> [<span class="number">10.</span><span class="number">.1</span>])
+
+    </code></pre><script>window.difference2 = "singers = {Jagger: \"Rock\", Elvis: \"Roll\"};\n\nouter = 1;\nchangeNumbers = -> {\n  inner = -1;\n  outer = 10;  # the last statement in the block\n}\n\ncleanUp();\n\n# the last statement in the script\ncountdown = (num for num in [10..1]);\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference2);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, the arguments  of a function must be wrapped in parentheses <code>( )</code>. An empty parentheses <code>()</code> is needed for invoking a function with no arguments but is optional for defining it.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code><span class="function"><span class="title">cube</span> = <span class="params">(x)</span> -&gt;</span> { square(x) * x }
+
+times(plus(1, 2), minus(3, 4));
+
+r = f([1]);
+
+<span class="function"><span class="title">sayHi</span> = -&gt;</span> { alert("Hi") }
+
+sayHi()
+
+    </code></pre><pre><code><span class="function"><span class="title">cube</span> = <span class="params">x</span> -&gt;</span> square(x) * x
+
+times plus 1, 2, minus 3, 4
+
+r = f [1]  # Here is a function call, not the same as 'f[1]'
+
+<span class="function"><span class="title">sayHi</span> = -&gt;</span> alert "Hi"
+
+sayHi()
+
+    </code></pre><script>window.difference3 = "cube = (x) -> { square(x) * x; }\n\ntimes(plus(1, 2), minus(3, 4));\n\nr = f([1]);\n\nsayHi = -> { alert(\"Hi\") }\n\nsayHi()\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference3);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, objects must be created using explicit curly braces. Elements in arrays and objects must be separated by commas <code>,</code> instead of indentations.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code>bitlist = [
+  <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>,
+  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>,
+  <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>
+];
+
+kids = {
+  <span class="attribute">brother</span>: {
+    <span class="attribute">name</span>: <span class="string">"Max"</span>,
+    <span class="attribute">age</span>:  <span class="number">11</span>
+  },
+  <span class="attribute">sister</span>: {
+    <span class="attribute">name</span>: <span class="string">"Ida"</span>,
+    <span class="attribute">age</span>:  <span class="number">9</span>
+  }
+};
+
+    </code></pre><pre><code>bitlist = [
+  <span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>
+  <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>
+  <span class="number">1</span>, <span class="number">1</span>, <span class="number">0</span>
+]
+
+kids = 
+  <span class="attribute">brother</span>: 
+    <span class="attribute">name</span>: <span class="string">"Max"</span>
+    <span class="attribute">age</span>:  <span class="number">11</span>
+  <span class="attribute">sister</span>: 
+    <span class="attribute">name</span>: <span class="string">"Ida"</span>
+    <span class="attribute">age</span>:  <span class="number">9</span>
+
+    </code></pre><script>window.difference4 = "bitlist = [\n  1, 0, 1,\n  0, 0, 1,\n  1, 1, 0\n];\n\nkids = {\n  brother: {\n    name: \"Max\",\n    age:  11\n  },\n  sister: {\n    name: \"Ida\",\n    age:  9\n  }\n};\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference4);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, an empty object is written as <code>{:}</code> while an empty curly braces <code>{}</code> represents an empty block.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span> {
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>, options = {:})</span> -&gt;</span> {}
+}
+
+    </code></pre><pre><code><span class="class"><span class="keyword">class</span> <span class="title">Person</span></span>
+  <span class="attribute">constructor</span>: <span class="function"><span class="params">(<span class="property">@name</span>, options = {})</span> -&gt;</span>
+
+    </code></pre><script>window.difference5 = "class Person {\n  constructor: (@name, options = {:}) -> {}\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference5);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>In CurlyCS, a colon <code>:</code> is needed in front of the element name in the shorthand notation for objects.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code>{<span class="property">:name</span>, <span class="property">:age</span>, <span class="property">:height</span> = <span class="string">'average'</span>} = { <span class="attribute">name</span>: <span class="string">'Tim'</span>, <span class="attribute">age</span>: <span class="number">4</span> };
+
+    </code></pre><pre><code>{<span class="property">name</span>, <span class="property">age</span>, <span class="property">height</span> = <span class="string">'average'</span>} = { <span class="attribute">name</span>: <span class="string">'Tim'</span>, <span class="attribute">age</span>: <span class="number">4</span> }
+
+    </code></pre><script>window.difference6 = "{:name, :age, :height = 'average'} = { name: 'Tim', age: 4 };\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference6);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>The keyword <code>then</code> used for writing single line statements in CoffeeScript is dropped in CurlyCS.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code>date = <span class="keyword">if</span> friday { sue } <span class="keyword">else</span> { jill }
+
+<span class="keyword">for</span> prop <span class="keyword">in</span> properties <span class="keyword">when</span> prop.isValid { return yes }
+
+    </code></pre><pre><code>date = <span class="keyword">if</span> friday <span class="keyword">then</span> sue <span class="keyword">else</span> jill
+
+<span class="keyword">for</span> prop <span class="keyword">in</span> properties <span class="keyword">when</span> prop.isValid <span class="keyword">then</span> return yes
+
+    </code></pre><script>window.difference7 = "date = if friday { sue } else { jill }\n\nfor prop in properties when prop.isValid { return yes }\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference7);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>Logical operator <code>?</code> in CoffeeScript is replaced with <code>??</code> in CurlyCS. So whitespace is no longer needed to differentiate between logical existential operators.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code><span class="comment"># Both '?' are existential operators</span>
+solipsism = <span class="literal">true</span> <span class="keyword">if</span> mind ? <span class="keyword">and</span> <span class="keyword">not</span> world?;
+
+<span class="comment"># Here is logical operator '??'</span>
+footprints = yeti ?? <span class="string">"bear"</span>;
+
+    </code></pre><pre><code><span class="comment"># '?' must be right behind the variables</span>
+solipsism = <span class="literal">true</span> <span class="keyword">if</span> mind? <span class="keyword">and</span> <span class="keyword">not</span> world?
+
+<span class="comment"># There must be a space in front of '?'</span>
+footprints = yeti ? <span class="string">"bear"</span>
+
+    </code></pre><script>window.difference8= "# Both '?' are existential operators\nsolipsism = true if mind ? and not world?;\n\n# Here is logical operator '??'\nfootprints = yeti ?? \"bear\";\n\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference8);'>load</div><br class='clear' /></div>
+
+<ul>
+  <li>
+    <p>CoffeeScript allows to declare variables inside <code>class</code> definitions using assignment statements <code>=</code>. Such syntax is <b>illegal</b> in CurlyCS.</p>
+  </li>
+</ul>
+    <div class='code'><pre><code><span class="class"><span class="keyword">class</span> <span class="title">A</span></span> {
+  <span class="attribute">b</span>: 'c'  <span class="comment"># define instance property</span>
+}
+    </code></pre><pre><code><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>
+  <span class="attribute">b</span>: 'c'  <span class="comment"># define instance property</span>
+  <span class="attribute">d</span>= 'e'  <span class="comment"># banned in CurlyCS</span>
+
+    </code></pre><script>window.difference9 = "class A {\n  b: 'c'\n}\n"</script><div class='minibutton load' onclick='javascript: loadConsole(difference9);'>load</div><br class='clear' /></div>
 
 
     <h2>
